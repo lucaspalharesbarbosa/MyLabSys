@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyLabSys.Migrations
 {
-    public partial class CricaoEntidadesIniciais : Migration
+    public partial class CriacaoTabelasIniciais : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,6 +42,7 @@ namespace MyLabSys.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(maxLength: 100, nullable: true),
+                    DataNascimento = table.Column<DateTime>(nullable: false),
                     Sexo = table.Column<byte>(nullable: false),
                     Endereco = table.Column<string>(maxLength: 255, nullable: true)
                 },
