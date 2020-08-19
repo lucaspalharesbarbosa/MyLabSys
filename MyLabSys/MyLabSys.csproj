@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200819005920_CricaoEntidadesIniciais.cs" />
+    <Compile Remove="Migrations\20200819005920_CricaoEntidadesIniciais.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
