@@ -1,9 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyLabSys.Models {
     [Table("Exames")]
     public class Exame {
+        public Exame() {
+            OrdensServicos = new HashSet<ExameOrdemServico>();
+        }
+
         public int Id { get; set; }
 
         [StringLength(100)]
@@ -11,5 +16,7 @@ namespace MyLabSys.Models {
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Preco { get; set; }
+
+        public IEnumerable<ExameOrdemServico> OrdensServicos { get; set; }
     }
 }
