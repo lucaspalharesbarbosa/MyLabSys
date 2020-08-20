@@ -109,7 +109,7 @@ namespace MyLabSys.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("NumeroPedidoMedido")
+                    b.Property<int>("NumeroPedidoMedico")
                         .HasColumnType("int");
 
                     b.Property<int>("NumeroProtocolo")

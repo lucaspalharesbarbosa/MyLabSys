@@ -13,7 +13,7 @@ namespace MyLabSys.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NumeroPedidoMedido = table.Column<int>(nullable: false),
+                    NumeroPedidoMedico = table.Column<int>(nullable: false),
                     NumeroProtocolo = table.Column<int>(nullable: false),
                     DataEmissao = table.Column<DateTime>(nullable: false),
                     DataPrevisaoEntrega = table.Column<DateTime>(nullable: false),

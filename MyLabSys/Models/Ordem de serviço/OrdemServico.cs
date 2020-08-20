@@ -12,7 +12,7 @@ namespace MyLabSys.Models {
 
         public int Id { get; set; }
 
-        public int NumeroPedidoMedido { get; set; }
+        public int NumeroPedidoMedico { get; set; }
 
         public int NumeroProtocolo { get; set; }
 

@@ -10,7 +10,7 @@ using MyLabSys.Models;
 namespace MyLabSys.Migrations
 {
     [DbContext(typeof(MyLabSysContext))]
-    [Migration("20200820000530_CriarVinculosOrdemServicoEExameOrdemServico")]
+    [Migration("20200820001437_CriarVinculosOrdemServicoEExameOrdemServico")]
     partial class CriarVinculosOrdemServicoEExameOrdemServico
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,7 +111,7 @@ namespace MyLabSys.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int>("NumeroPedidoMedido")
+                    b.Property<int>("NumeroPedidoMedico")
                         .HasColumnType("int");
 
                     b.Property<int>("NumeroProtocolo")
