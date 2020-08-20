@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20200819235830_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
     <Compile Remove="Migrations\20200820000530_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
     <Compile Remove="Migrations\20200820000530_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
+    <Compile Remove="Migrations\20200820001437_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
+    <Compile Remove="Migrations\20200820001437_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

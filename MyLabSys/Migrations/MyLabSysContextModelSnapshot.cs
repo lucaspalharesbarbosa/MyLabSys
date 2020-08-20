@@ -90,6 +90,14 @@ namespace MyLabSys.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CodigoPedidoMedico")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CodigoProtocolo")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<DateTime>("DataEmissao")
                         .HasColumnType("datetime2");
 
@@ -106,14 +114,8 @@ namespace MyLabSys.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NomeConvenio")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("NumeroPedidoMedico")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumeroProtocolo")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
 
                     b.HasKey("Id");
 

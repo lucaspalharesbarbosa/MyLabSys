@@ -12,9 +12,11 @@ namespace MyLabSys.Models {
 
         public int Id { get; set; }
 
-        public int NumeroPedidoMedico { get; set; }
+        [StringLength(100)]
+        public string CodigoPedidoMedico { get; set; }
 
-        public int NumeroProtocolo { get; set; }
+        [StringLength(100)]
+        public string CodigoProtocolo { get; set; }
 
         public DateTime DataEmissao { get; set; }
 
@@ -23,7 +25,7 @@ namespace MyLabSys.Models {
         public int IdPaciente { get; set; }
         public Paciente Paciente { get; set; }
 
-        [StringLength(100)]
+        [StringLength(150)]
         public string NomeConvenio { get; set; }
 
         public int IdPostoColeta { get; set; }
