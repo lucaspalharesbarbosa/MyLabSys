@@ -5,13 +5,9 @@ namespace MyLabSys.ViewModels {
     public class OrdemServicoGridModel {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
         [Display(Name = "Protocolo")]
         public string CodigoProtocolo { get; set; }
 
-        [Required]
-        [StringLength(100)]
         [Display(Name = "Código do pedido")]
         public string CodigoPedidoMedico { get; set; }
 

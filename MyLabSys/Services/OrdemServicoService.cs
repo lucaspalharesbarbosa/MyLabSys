@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyLabSys.Models;
 using MyLabSys.Services.Interfaces;
+using MyLabSys.ViewModels.Dtos;
 using System.Linq;
 
 namespace MyLabSys.Services {
@@ -9,6 +10,22 @@ namespace MyLabSys.Services {
 
         public OrdemServicoService(MyLabSysContext db) {
             _db = db;
+        }
+
+        public bool Incluir(OrdemServicoDto ordemServicoDto) {
+            var ordemServico = new OrdemServico {
+                IdPaciente = ordemServicoDto.IdPaciente,
+                IdMedico = ordemServicoDto.IdMedico,
+                IdPostoColeta = ordemServicoDto.IdPostoColeta,
+                CodigoProtocolo = ordemServicoDto.CodigoProtocolo,
+                CodigoPedidoMedico = ordemServicoDto.CodigoPedidoMedico,
+                DataEmissao = ordemServicoDto.DataEmissao,
+                DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value,
+            };
+
+            _db.OrdensServicos.Add(ordemServico);
+
+            return true;
         }
 
         public OrdemServico[] ObterOrdensServicos(string codigoProtocolo) {
