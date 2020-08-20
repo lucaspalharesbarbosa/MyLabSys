@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyLabSys.Models;
+using MyLabSys.Services;
+using MyLabSys.Services.Interfaces;
+using System;
 
 namespace MyLabSys {
     public class Startup {
@@ -18,7 +21,13 @@ namespace MyLabSys {
         public void ConfigureServices(IServiceCollection services) {
             AdicionarServicoConexaoSqlServer(services);
 
+            RegistrarInterfacesParaInjecaoDependencia(services);
+
             services.AddControllersWithViews();
+        }
+
+        private void RegistrarInterfacesParaInjecaoDependencia(IServiceCollection services) {
+            services.AddTransient<IOrdemServicoService, OrdemServicoService>();
         }
 
         void AdicionarServicoConexaoSqlServer(IServiceCollection services) {
