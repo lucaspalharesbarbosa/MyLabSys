@@ -29,9 +29,9 @@ namespace MyLabSys.Models {
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ExameOrdemServico>()
-                 .HasOne(exameOrdem => exameOrdem.Exame)
-                 .WithMany(exame => exame.OrdensServicos)
-                 .HasForeignKey(exameOrdem => exameOrdem.IdExame)
+                .HasOne(exameOrdem => exameOrdem.Exame)
+                .WithMany(exame => exame.OrdensServicos)
+                .HasForeignKey(exameOrdem => exameOrdem.IdExame)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ExameOrdemServico>()
                 .HasOne(exameOrdem => exameOrdem.OrdemServico)
