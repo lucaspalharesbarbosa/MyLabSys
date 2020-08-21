@@ -54,7 +54,7 @@ namespace MyLabSys.Controllers {
                 ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome", viewModel.IdPaciente);
                 ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome", viewModel.IdMedico);
                 ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", viewModel.IdPostoColeta);
-                ViewData["ExamesSelectList"] = ObterExamesSelectList();
+                ViewData["ExamesSelectList"] = ObterExamesSelectList(true);
 
                 return View(viewModel);
             }
@@ -78,11 +78,18 @@ namespace MyLabSys.Controllers {
             return RedirectToAction(nameof(Index));
         }
 
-        private SelectListItem[] ObterExamesSelectList() {
+        private SelectListItem[] ObterExamesSelectList(bool inicializar = false) {
             return _db.Exames
+                .Select(exame => new {
+                    exame.Id,
+                    exame.Descricao,
+                    exame.Preco
+                })
+                .ToArray()
                 .Select(exame => new SelectListItem {
                     Value = exame.Id.ToString(),
-                    Text = exame.Descricao
+                    Text = exame.Descricao + $" (Preço: {exame.Preco})",
+                    Selected = inicializar
                 }).ToArray();
         }
     }
