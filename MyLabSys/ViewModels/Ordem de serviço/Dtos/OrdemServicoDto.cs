@@ -11,5 +11,6 @@ namespace MyLabSys.ViewModels.Dtos {
         public DateTime DataEmissao { get; set; }
         public DateTime? DataPrevisaoEntrega { get; set; }
         public string NomeConvenio { get; set; }
+        public int[] IdsExames { get; set; }
     }
 }

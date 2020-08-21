@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyLabSys.ViewModels {
@@ -37,5 +38,9 @@ namespace MyLabSys.ViewModels {
         [Required(ErrorMessage = "O campo Convênio é obrigatório")]
         [Display(Name = "Convênio")]
         public string NomeConvenio { get; set; }
+
+        [Required(ErrorMessage = "O campo Exames é obrigatório")]
+        [Display(Name = "Exames")]
+        public int[] IdsExames { get; set; }
     }
 }

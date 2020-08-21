@@ -21,7 +21,16 @@ namespace MyLabSys.Services {
                 CodigoPedidoMedico = ordemServicoDto.CodigoPedidoMedico,
                 DataEmissao = ordemServicoDto.DataEmissao,
                 DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value,
+                NomeConvenio = ordemServicoDto.NomeConvenio
             };
+            var exames = _db.Exames
+                .Where(exame => ordemServicoDto.IdsExames.Contains(exame.Id))
+                .Select(exame => new ExameOrdemServico {
+                    OrdemServico = ordemServico,
+                    IdExame = exame.Id,
+                    Preco = exame.Preco
+                }).ToArray();
+            ordemServico.Exames = exames;
 
             _db.OrdensServicos.Add(ordemServico);
 

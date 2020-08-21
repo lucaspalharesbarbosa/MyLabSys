@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyLabSys.Models;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels;
@@ -38,6 +39,7 @@ namespace MyLabSys.Controllers {
             ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome");
             ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome");
             ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao");
+            ViewData["ExamesSelectList"] = ObterExamesSelectList();
 
             return View(new OrdemServicoViewModel {
                 DataEmissao = DateTime.Today,
@@ -52,6 +54,7 @@ namespace MyLabSys.Controllers {
                 ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome", viewModel.IdPaciente);
                 ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome", viewModel.IdMedico);
                 ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", viewModel.IdPostoColeta);
+                ViewData["ExamesSelectList"] = ObterExamesSelectList();
 
                 return View(viewModel);
             }
@@ -64,7 +67,8 @@ namespace MyLabSys.Controllers {
                 CodigoPedidoMedico = viewModel.CodigoPedidoMedico,
                 DataEmissao = viewModel.DataEmissao,
                 DataPrevisaoEntrega = viewModel.DataPrevisaoEntrega,
-                NomeConvenio = viewModel.NomeConvenio
+                NomeConvenio = viewModel.NomeConvenio,
+                IdsExames = viewModel.IdsExames
             };
 
             _service.Incluir(ordemServicoDto);
@@ -72,6 +76,14 @@ namespace MyLabSys.Controllers {
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private SelectListItem[] ObterExamesSelectList() {
+            return _db.Exames
+                .Select(exame => new SelectListItem {
+                    Value = exame.Id.ToString(),
+                    Text = exame.Descricao
+                }).ToArray();
         }
     }
 }
