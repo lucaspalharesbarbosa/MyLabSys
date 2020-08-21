@@ -32,10 +32,10 @@
                 <tr>
                     <th>Protocolo</th>
                     <th>Código do pedido</th>
-                    <th>Emissão</th>
-                    <th>Previsao de entrega</th>
                     <th>Paciente</th>
                     <th>Convênio</th>
+                    <th>Emissão</th>
+                    <th>Previsao de entrega</th>
                     <th></th>
                 </tr>
             </thead>
@@ -44,13 +44,12 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.CodigoProtocolo)</td>
                         <td>@Html.DisplayFor(modelItem => item.CodigoPedidoMedico)</td>
-                        <td>@Html.DisplayFor(modelItem => item.DataEmissaoFormatada)</td>
-                        <td>@Html.DisplayFor(modelItem => item.DataPrevisaoEntregaFormatada)</td>
                         <td>@Html.DisplayFor(modelItem => item.NomePaciente)</td>
                         <td>@Html.DisplayFor(modelItem => item.NomeConvenio)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DataEmissaoFormatada)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DataPrevisaoEntregaFormatada)</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                            @*<a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |*@
                             <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
                         </td>
                     </tr>

@@ -4,10 +4,16 @@
     ViewData["Title"] = "Ordem de serviço";
 }
 
-<h2>Cadastrar ordem de serviço</h2>
+<h2>@(string.IsNullOrEmpty(Model.CodigoProtocolo) ? "Nova ordem de serviço" : $"Ordem de serviço - {Model.CodigoProtocolo}")</h2>
 <hr />
 <form asp-action="Create" autocomplete="off">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input type="submit" value="Salvar" class="btn btn-success" />
+        <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
+    </div>
+    <hr />
+    @Html.HiddenFor(viewModel => viewModel.Id)
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
@@ -42,6 +48,24 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
+                <label asp-for="IdPaciente" class="control-label"></label>
+                <select asp-for="IdPaciente" class="select2 select2-paciente form-control" asp-items="ViewBag.PacientesSelectList">
+                    <option></option>
+                </select>
+                <span asp-validation-for="IdPaciente" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="NomeConvenio" class="control-label"></label>
+                <input asp-for="NomeConvenio" class="form-control" placeholder="Informe o convênio do paciente" />
+                <span asp-validation-for="NomeConvenio" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
                 <label asp-for="IdMedico" class="control-label"></label>
                 <select asp-for="IdMedico" class="select2 select2-medico form-control" asp-items="ViewBag.MedicosSelectList">
                     <option></option>
@@ -60,24 +84,6 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="IdPaciente" class="control-label"></label>
-                <select asp-for="IdPaciente" class="select2 select2-paciente form-control" asp-items="ViewBag.PacientesSelectList">
-                    <option></option>
-                </select>
-                <span asp-validation-for="IdPaciente" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="NomeConvenio" class="control-label"></label>
-                <input asp-for="NomeConvenio" class="form-control" placeholder="Informe o convênio do paciente" />
-                <span asp-validation-for="NomeConvenio" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-12">
             <div class="form-group">
                 <label asp-for="IdsExames" class="control-label"></label>
@@ -87,8 +93,4 @@
         </div>
     </div>
     <hr />
-    <div class="form-group">
-        <input type="submit" value="Salvar" class="btn btn-success" />
-        <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
-    </div>
 </form>
