@@ -77,6 +77,7 @@ namespace MyLabSys.Controllers {
             }
 
             var ordemServicoDto = new OrdemServicoDto {
+                Id = viewModel.Id,
                 IdPaciente = viewModel.IdPaciente.Value,
                 IdMedico = viewModel.IdMedico.Value,
                 IdPostoColeta = viewModel.IdPostoColeta.Value,
@@ -88,19 +89,20 @@ namespace MyLabSys.Controllers {
                 IdsExames = viewModel.IdsExames
             };
 
-            _service.Incluir(ordemServicoDto);
+            _service.Salvar(ordemServicoDto);
 
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(int? id) {
+        public IActionResult Edit(int? id) {
             if (id == null) {
                 return NotFound();
             }
 
             var ordemServico = _db.OrdensServicos
+                .Where(o => o.Id == id.Value)
                 .Include(o => o.Exames)
                 .First();
 
@@ -122,7 +124,7 @@ namespace MyLabSys.Controllers {
                 CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
                 DataEmissao = ordemServico.DataEmissao,
                 DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
-                NomeConvenio = ordemServico.CodigoPedidoMedico,
+                NomeConvenio = ordemServico.NomeConvenio,
                 IdsExames = ordemServico.Exames
                     .Select(e => e.Id)
                     .ToArray()
