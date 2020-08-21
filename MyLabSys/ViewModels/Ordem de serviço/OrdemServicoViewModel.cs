@@ -27,8 +27,8 @@ namespace MyLabSys.ViewModels {
         [Display(Name = "Médico")]
         public int? IdMedico { get; set; }
 
-        [Required(ErrorMessage = "O campo Laboratório da coleta é obrigatório")]
-        [Display(Name = "Laboratório da coleta")]
+        [Required(ErrorMessage = "O campo Posto de coleta é obrigatório")]
+        [Display(Name = "Posto de coleta")]
         public int? IdPostoColeta { get; set; }
 
         [Required(ErrorMessage = "O campo Paciente é obrigatório")]

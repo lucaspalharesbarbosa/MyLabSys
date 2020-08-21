@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 using MyLabSys.Models;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels;
@@ -20,9 +20,10 @@ namespace MyLabSys.Controllers {
             _service = service;
         }
 
-        public IActionResult Index(string codigoProtocolo) {
-            var ordensServicosGridModel = _service.ObterOrdensServicos(codigoProtocolo)
-                .Select(ordem => new OrdemServicoGridModel {
+        public IActionResult Index() {
+            return View(new OrdemServicoGridModel {
+                OrdensServicos = _service.ObterOrdensServicos()
+                .Select(ordem => new ItemOrdemServicoGridModel {
                     Id = ordem.Id,
                     CodigoProtocolo = ordem.CodigoProtocolo,
                     CodigoPedidoMedico = ordem.CodigoPedidoMedico,
@@ -30,9 +31,25 @@ namespace MyLabSys.Controllers {
                     DataPrevisaoEntrega = ordem.DataPrevisaoEntrega,
                     NomeConvenio = ordem.NomeConvenio,
                     NomePaciente = ordem.Paciente.Nome
-                }).ToArray();
+                }).ToArray()
+            });
+        }
 
-            return View(ordensServicosGridModel);
+        [HttpPost]
+        public IActionResult Index(string codigoProtocoloFiltrar) {
+            return View(new OrdemServicoGridModel {
+                CodigoProtocoloFiltrar = codigoProtocoloFiltrar,
+                OrdensServicos = _service.ObterOrdensServicos(codigoProtocoloFiltrar)
+                .Select(ordem => new ItemOrdemServicoGridModel {
+                    Id = ordem.Id,
+                    CodigoProtocolo = ordem.CodigoProtocolo,
+                    CodigoPedidoMedico = ordem.CodigoPedidoMedico,
+                    DataEmissao = ordem.DataEmissao,
+                    DataPrevisaoEntrega = ordem.DataPrevisaoEntrega,
+                    NomeConvenio = ordem.NomeConvenio,
+                    NomePaciente = ordem.Paciente.Nome
+                }).ToArray()
+            });
         }
 
         public IActionResult Create() {
@@ -76,6 +93,40 @@ namespace MyLabSys.Controllers {
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Edit(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            var ordemServico = _db.OrdensServicos
+                .Include(o => o.Exames)
+                .First();
+
+            if (ordemServico == null) {
+                return NotFound();
+            }
+
+            ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome", ordemServico.IdPaciente);
+            ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome", ordemServico.IdMedico);
+            ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", ordemServico.IdPostoColeta);
+            ViewData["ExamesSelectList"] = ObterExamesSelectList(true);
+
+            return View("Create", new OrdemServicoViewModel {
+                Id = ordemServico.Id,
+                IdPaciente = ordemServico.IdPaciente,
+                IdMedico = ordemServico.IdMedico,
+                IdPostoColeta = ordemServico.IdPostoColeta,
+                CodigoProtocolo = ordemServico.CodigoProtocolo,
+                CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
+                DataEmissao = ordemServico.DataEmissao,
+                DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
+                NomeConvenio = ordemServico.CodigoPedidoMedico,
+                IdsExames = ordemServico.Exames
+                    .Select(e => e.Id)
+                    .ToArray()
+            });
         }
 
         private SelectListItem[] ObterExamesSelectList(bool inicializar = false) {
