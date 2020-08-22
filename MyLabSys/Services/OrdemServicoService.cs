@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyLabSys.Models;
+using MyLabSys.Models.Enums;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels.Dtos;
 using System;
@@ -33,7 +34,7 @@ namespace MyLabSys.Services {
                 CodigoPedidoMedico = ordemServicoDto.CodigoPedidoMedico,
                 DataEmissao = ordemServicoDto.DataEmissao,
                 DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value,
-                NomeConvenio = ordemServicoDto.NomeConvenio
+                Status = StatusOrdemServico.Aberta
             };
             var exames = _db.Exames
                 .Where(exame => ordemServicoDto.IdsExames.Contains(exame.Id))
@@ -84,7 +85,6 @@ namespace MyLabSys.Services {
             ordemServico.CodigoPedidoMedico = ordemServicoDto.CodigoPedidoMedico;
             ordemServico.DataEmissao = ordemServicoDto.DataEmissao;
             ordemServico.DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value;
-            ordemServico.NomeConvenio = ordemServicoDto.NomeConvenio;
 
             atualizarExames();
 
@@ -141,7 +141,7 @@ namespace MyLabSys.Services {
                     IdPostoColeta = ordemServico.IdPostoColeta,
                     CodigoProtocolo = ordemServico.CodigoProtocolo,
                     CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
-                    NomeConvenio = ordemServico.NomeConvenio,
+                    NomeConvenio = ordemServico.Paciente.Convenio.Nome,
                     DataEmissao = ordemServico.DataEmissao,
                     DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
                     NomePaciente = ordemServico.Paciente.Nome,

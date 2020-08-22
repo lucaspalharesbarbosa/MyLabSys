@@ -5,6 +5,7 @@ namespace MyLabSys.Models {
         public MyLabSysContext(DbContextOptions<MyLabSysContext> options) : base(options) { }
 
         public DbSet<Paciente> Pacientes { get; set; }
+        public DbSet<Convenio> Convenios { get; set; }
         public DbSet<Medico> Medicos { get; set; }
         public DbSet<Exame> Exames { get; set; }
         public DbSet<OrdemServico> OrdensServicos { get; set; }
@@ -37,6 +38,12 @@ namespace MyLabSys.Models {
                 .WithOne(exameOrdem => exameOrdem.Exame)
                 .HasForeignKey(exameOrdem => exameOrdem.IdExame)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Paciente>()
+                .HasOne(paciente => paciente.Convenio)
+                .WithMany(convenio => convenio.Pacientes)
+                .HasForeignKey(paciente => paciente.IdConvenio)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

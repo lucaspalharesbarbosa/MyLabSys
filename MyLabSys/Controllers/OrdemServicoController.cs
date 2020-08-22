@@ -48,9 +48,9 @@ namespace MyLabSys.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrdemServicoViewModel viewModel) {
             if (!ModelState.IsValid) {
-                ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome", viewModel.IdPaciente);
-                ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome", viewModel.IdMedico);
-                ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", viewModel.IdPostoColeta);
+                ViewData["PacientesSelectList"] = ObterPacientesSelectList(viewModel.IdPaciente);
+                ViewData["MedicosSelectList"] = ObterMedicosSelectList(viewModel.IdMedico);
+                ViewData["PostosColetasSelectList"] = ObterPostosColetasSelectList(viewModel.IdPostoColeta);
                 ViewData["ExamesSelectList"] = ObterExamesSelectList();
 
                 return View(viewModel);
@@ -65,7 +65,6 @@ namespace MyLabSys.Controllers {
                 CodigoPedidoMedico = viewModel.CodigoPedidoMedico,
                 DataEmissao = viewModel.DataEmissao,
                 DataPrevisaoEntrega = viewModel.DataPrevisaoEntrega,
-                NomeConvenio = viewModel.NomeConvenio,
                 IdsExames = viewModel.IdsExames
             };
 
@@ -84,27 +83,28 @@ namespace MyLabSys.Controllers {
             var ordemServico = _db.OrdensServicos
                 .Where(o => o.Id == id.Value)
                 .Include(o => o.Exames)
+                .Include(o => o.Paciente.Convenio)
                 .First();
 
             if (ordemServico == null) {
                 return NotFound();
             }
 
-            ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome", ordemServico.IdPaciente);
-            ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome", ordemServico.IdMedico);
-            ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", ordemServico.IdPostoColeta);
+            ViewData["PacientesSelectList"] = ObterPacientesSelectList(ordemServico.IdPaciente);
+            ViewData["MedicosSelectList"] = ObterMedicosSelectList(ordemServico.IdMedico);
+            ViewData["PostosColetasSelectList"] = ObterPostosColetasSelectList(ordemServico.IdPostoColeta);
             ViewData["ExamesSelectList"] = ObterExamesSelectList(true);
 
             return View(nameof(Create), new OrdemServicoViewModel {
                 Id = ordemServico.Id,
                 IdPaciente = ordemServico.IdPaciente,
+                NomeConvenioPaciente = ordemServico.Paciente.Convenio.Nome,
                 IdMedico = ordemServico.IdMedico,
                 IdPostoColeta = ordemServico.IdPostoColeta,
                 CodigoProtocolo = ordemServico.CodigoProtocolo,
                 CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
                 DataEmissao = ordemServico.DataEmissao,
                 DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
-                NomeConvenio = ordemServico.NomeConvenio,
                 IdsExames = ordemServico.Exames
                     .Select(e => e.IdExame)
                     .ToArray()
@@ -122,6 +122,30 @@ namespace MyLabSys.Controllers {
             await _db.SaveChangesAsync();
 
             return View(nameof(Index), _gridModelFactory.Build());
+        }
+
+        public JsonResult ObterNomeConvenioPaciente(int idPaciente) {
+            var nomeConvenio = _db.Pacientes
+                .Where(p => p.Id == idPaciente)
+                .Select(p => p.Convenio.Nome)
+                .FirstOrDefault();
+            nomeConvenio = !string.IsNullOrEmpty(nomeConvenio)
+                ? nomeConvenio
+                : "Sem convênio";
+
+            return Json(nomeConvenio);
+        }
+
+        private SelectList ObterPacientesSelectList(int? idPacienteSelecionado) {
+            return new SelectList(_db.Pacientes, "Id", "Nome", idPacienteSelecionado);
+        }
+
+        private SelectList ObterMedicosSelectList(int? idMedicoSelecionado) {
+            return new SelectList(_db.Medicos, "Id", "Nome", idMedicoSelecionado);
+        }
+
+        private SelectList ObterPostosColetasSelectList(int? idPostoColetaSelecionado) {
+            return new SelectList(_db.PostosColetas, "Id", "Descricao", idPostoColetaSelecionado);
         }
 
         private SelectListItem[] ObterExamesSelectList(bool inicializar = false) {

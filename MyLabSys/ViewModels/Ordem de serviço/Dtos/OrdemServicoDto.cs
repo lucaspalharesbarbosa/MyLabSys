@@ -10,9 +10,9 @@ namespace MyLabSys.ViewModels.Dtos {
         public string CodigoPedidoMedico { get; set; }
         public DateTime DataEmissao { get; set; }
         public DateTime? DataPrevisaoEntrega { get; set; }
-        public string NomeConvenio { get; set; }
         public int[] IdsExames { get; set; }
         public string NomePaciente { get; set; }
         public string NomeMedico { get; set; }
+        public string NomeConvenio { get; set; }
     }
 }

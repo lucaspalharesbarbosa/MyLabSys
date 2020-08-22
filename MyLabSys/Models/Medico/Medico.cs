@@ -17,6 +17,6 @@ namespace MyLabSys.Models {
         [StringLength(150)]
         public string Especialidade { get; set; }
 
-        public IEnumerable<OrdemServico> OrdensServicos { get; set; }
+        public ICollection<OrdemServico> OrdensServicos { get; set; }
     }
 }

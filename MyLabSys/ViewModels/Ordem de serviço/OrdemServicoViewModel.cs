@@ -33,9 +33,8 @@ namespace MyLabSys.ViewModels {
         [Display(Name = "Paciente")]
         public int? IdPaciente { get; set; }
 
-        [Required(ErrorMessage = "O campo Convênio é obrigatório")]
         [Display(Name = "Convênio")]
-        public string NomeConvenio { get; set; }
+        public string NomeConvenioPaciente { get; set; }
 
         [Required(ErrorMessage = "O campo Exames é obrigatório")]
         [Display(Name = "Exames")]

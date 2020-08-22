@@ -23,6 +23,12 @@
     <Compile Remove="Migrations\20200822010832_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
     <Compile Remove="Migrations\20200822011217_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
     <Compile Remove="Migrations\20200822011217_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
+    <Compile Remove="Migrations\20200822180545_AddConvenio.cs" />
+    <Compile Remove="Migrations\20200822180545_AddConvenio.Designer.cs" />
+    <Compile Remove="Migrations\20200822180651_AddConvenio.cs" />
+    <Compile Remove="Migrations\20200822180651_AddConvenio.Designer.cs" />
+    <Compile Remove="Migrations\20200822185916_AddConvenio.cs" />
+    <Compile Remove="Migrations\20200822185916_AddConvenio.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

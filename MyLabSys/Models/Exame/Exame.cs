@@ -17,6 +17,6 @@ namespace MyLabSys.Models {
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Preco { get; set; }
 
-        public IEnumerable<ExameOrdemServico> OrdensServicos { get; set; }
+        public ICollection<ExameOrdemServico> OrdensServicos { get; set; }
     }
 }

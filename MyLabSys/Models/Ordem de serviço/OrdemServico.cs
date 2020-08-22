@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyLabSys.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,15 +26,14 @@ namespace MyLabSys.Models {
         public int IdPaciente { get; set; }
         public Paciente Paciente { get; set; }
 
-        [StringLength(150)]
-        public string NomeConvenio { get; set; }
-
         public int IdPostoColeta { get; set; }
         public PostoColeta PostoColeta { get; set; }
 
         public int IdMedico { get; set; }
         public Medico Medico { get; set; }
 
-        public IEnumerable<ExameOrdemServico> Exames { get; set; }
+        public StatusOrdemServico Status { get; set; }
+
+        public ICollection<ExameOrdemServico> Exames { get; set; }
     }
 }
