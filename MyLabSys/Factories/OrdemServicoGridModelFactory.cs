@@ -22,7 +22,7 @@ namespace MyLabSys.Factories {
         private OrdemServicoGridModel BuildImpl(string codigoProtocoloFiltrar = "") {
             return new OrdemServicoGridModel {
                 CodigoProtocoloFiltrar = codigoProtocoloFiltrar,
-                OrdensServicos = _service.ObterDadosOrdensServicos(codigoProtocoloFiltrar)
+                OrdensServicos = _service.ObterDadosOrdensServicosPorProtocolo(codigoProtocoloFiltrar)
                     .Select(ordem => new ItemOrdemServicoGridModel {
                         Id = ordem.Id,
                         CodigoProtocolo = ordem.CodigoProtocolo,

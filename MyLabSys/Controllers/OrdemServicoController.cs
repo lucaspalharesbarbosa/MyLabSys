@@ -80,34 +80,28 @@ namespace MyLabSys.Controllers {
                 return NotFound();
             }
 
-            var ordemServico = _db.OrdensServicos
-                .Where(o => o.Id == id.Value)
-                .Include(o => o.Exames)
-                .Include(o => o.Paciente.Convenio)
-                .First();
+            var dadosOrdemServicoDto = _service.ObterDadosOrdensServicos(id.Value).FirstOrDefault();
 
-            if (ordemServico == null) {
+            if (dadosOrdemServicoDto == null) {
                 return NotFound();
             }
 
-            ViewData["PacientesSelectList"] = ObterPacientesSelectList(ordemServico.IdPaciente);
-            ViewData["MedicosSelectList"] = ObterMedicosSelectList(ordemServico.IdMedico);
-            ViewData["PostosColetasSelectList"] = ObterPostosColetasSelectList(ordemServico.IdPostoColeta);
+            ViewData["PacientesSelectList"] = ObterPacientesSelectList(dadosOrdemServicoDto.IdPaciente);
+            ViewData["MedicosSelectList"] = ObterMedicosSelectList(dadosOrdemServicoDto.IdMedico);
+            ViewData["PostosColetasSelectList"] = ObterPostosColetasSelectList(dadosOrdemServicoDto.IdPostoColeta);
             ViewData["ExamesSelectList"] = ObterExamesSelectList(true);
 
             return View(nameof(Create), new OrdemServicoViewModel {
-                Id = ordemServico.Id,
-                IdPaciente = ordemServico.IdPaciente,
-                NomeConvenioPaciente = ordemServico.Paciente.Convenio.Nome,
-                IdMedico = ordemServico.IdMedico,
-                IdPostoColeta = ordemServico.IdPostoColeta,
-                CodigoProtocolo = ordemServico.CodigoProtocolo,
-                CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
-                DataEmissao = ordemServico.DataEmissao,
-                DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
-                IdsExames = ordemServico.Exames
-                    .Select(e => e.IdExame)
-                    .ToArray()
+                Id = dadosOrdemServicoDto.Id,
+                IdPaciente = dadosOrdemServicoDto.IdPaciente,
+                NomeConvenioPaciente = dadosOrdemServicoDto.NomeConvenio,
+                IdMedico = dadosOrdemServicoDto.IdMedico,
+                IdPostoColeta = dadosOrdemServicoDto.IdPostoColeta,
+                CodigoProtocolo = dadosOrdemServicoDto.CodigoProtocolo,
+                CodigoPedidoMedico = dadosOrdemServicoDto.CodigoPedidoMedico,
+                DataEmissao = dadosOrdemServicoDto.DataEmissao,
+                DataPrevisaoEntrega = dadosOrdemServicoDto.DataPrevisaoEntrega,
+                IdsExames = dadosOrdemServicoDto.IdsExames.ToArray()
             });
         }
         

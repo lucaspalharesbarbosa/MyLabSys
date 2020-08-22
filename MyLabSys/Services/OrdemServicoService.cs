@@ -132,8 +132,15 @@ namespace MyLabSys.Services {
             }
         }
 
-        public OrdemServicoDto[] ObterDadosOrdensServicos(string codigoProtocolo = "") {
-            var ordensServicos = _db.OrdensServicos
+        public OrdemServicoDto[] ObterDadosOrdensServicos(int? id = null) {
+            var queryOrdensServicos = _db.OrdensServicos.AsQueryable();
+
+            var temId = id != null && id > 0;
+            if (temId) {
+                queryOrdensServicos = queryOrdensServicos.Where(o => o.Id == id.Value).AsQueryable();
+            }
+
+            return queryOrdensServicos
                 .Select(ordemServico => new OrdemServicoDto {
                     Id = ordemServico.Id,
                     IdPaciente = ordemServico.IdPaciente,
@@ -145,12 +152,16 @@ namespace MyLabSys.Services {
                     DataEmissao = ordemServico.DataEmissao,
                     DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
                     NomePaciente = ordemServico.Paciente.Nome,
-                    NomeMedico = ordemServico.Medico.Nome
+                    NomeMedico = ordemServico.Medico.Nome,
+                    IdsExames = ordemServico.Exames.Select(e => e.IdExame)
                 }).ToArray();
+        }
 
-            var filtrarPorCodigoProtocolo = !string.IsNullOrEmpty(codigoProtocolo);
+        public OrdemServicoDto[] ObterDadosOrdensServicosPorProtocolo(string codigoProtocolo) {
+            var ordensServicos = ObterDadosOrdensServicos();
+            var temCodigoProtocolo = !string.IsNullOrEmpty(codigoProtocolo);
 
-            if (filtrarPorCodigoProtocolo) {
+            if (temCodigoProtocolo) {
                 ordensServicos = ordensServicos
                     .Where(ordem => ordem.CodigoProtocolo.Contains(codigoProtocolo))
                     .ToArray();
