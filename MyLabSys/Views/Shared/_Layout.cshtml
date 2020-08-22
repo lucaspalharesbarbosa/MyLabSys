@@ -47,25 +47,15 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://kit.fontawesome.com/fa380d7586.js" crossorigin="anonymous"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+@section Scripts {
     <script>
         $(document).ready(function () {
             $(".select2").select2();
-
-            $(".select2-medico").select2({
-                placeholder: "Selecione o médico",
-                allowClear: true
-            });
-            $(".select2-posto-coleta").select2({
-                placeholder: "Selecione o posto de coleta",
-                allowClear: true
-            });
-            $(".select2-paciente").select2({
-                placeholder: "Selecione o paciente",
-                allowClear: true
-            });
-            $(".select2-exames").select2({
-                placeholder: "Selecione os exames"
-            });
 
             jQuery('input,select').each(function () {
                 var campoRequired = jQuery(this).attr('data-val-required');
@@ -82,6 +72,4 @@
             });
         });
     </script>
-    @RenderSection("Scripts", required: false)
-</body>
-</html>
+}

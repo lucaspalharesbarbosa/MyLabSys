@@ -123,3 +123,25 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".select2-medico").select2({
+                placeholder: "Selecione o médico",
+                allowClear: true
+            });
+            $(".select2-posto-coleta").select2({
+                placeholder: "Selecione o posto de coleta",
+                allowClear: true
+            });
+            $(".select2-paciente").select2({
+                placeholder: "Selecione o paciente",
+                allowClear: true
+            });
+            $(".select2-exames").select2({
+                placeholder: "Selecione os exames"
+            });
+        });
+    </script>
+}
