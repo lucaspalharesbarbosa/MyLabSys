@@ -5,7 +5,6 @@ namespace MyLabSys.ViewModels {
     public class OrdemServicoViewModel {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O campo Protocolo é obrigatório")]
         [StringLength(100)]
         [Display(Name = "Protocolo")]
         public string CodigoProtocolo { get; set; }

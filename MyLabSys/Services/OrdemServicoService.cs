@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyLabSys.Models;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels.Dtos;
+using System;
 using System.Linq;
 
 namespace MyLabSys.Services {
@@ -28,7 +29,7 @@ namespace MyLabSys.Services {
                 IdPaciente = ordemServicoDto.IdPaciente,
                 IdMedico = ordemServicoDto.IdMedico,
                 IdPostoColeta = ordemServicoDto.IdPostoColeta,
-                CodigoProtocolo = ordemServicoDto.CodigoProtocolo,
+                CodigoProtocolo = GerarCodigoProtocolo(ordemServicoDto.CodigoProtocolo, ordemServicoDto.IdPaciente),
                 CodigoPedidoMedico = ordemServicoDto.CodigoPedidoMedico,
                 DataEmissao = ordemServicoDto.DataEmissao,
                 DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value,
@@ -46,17 +47,43 @@ namespace MyLabSys.Services {
             _db.OrdensServicos.Add(ordemServico);
         }
 
+        private string GerarCodigoProtocolo(string codigoProtocolo, int idPaciente) {
+            var informouCodigoProtocolo = !string.IsNullOrEmpty(codigoProtocolo);
+
+            if (informouCodigoProtocolo) {
+                return codigoProtocolo;
+            }
+
+            var nomePaciente = _db.Pacientes
+                .Where(p => p.Id == idPaciente)
+                .Select(p => p.Nome)
+                .First();
+            var nomesSeparados = nomePaciente.Split(" ");
+            var iniciaisNomePaciente = string.Empty;
+
+            foreach (var nome in nomesSeparados) {
+                iniciaisNomePaciente += nome.Substring(0, 1);
+            }
+
+            var random = new Random();
+            var codigoProtocoloGerado = iniciaisNomePaciente + random.Next(9999);
+
+            return codigoProtocoloGerado;
+        }
+
         private void Editar(OrdemServicoDto ordemServicoDto) {
             var ordemServico = _db.OrdensServicos
                 .Where(o => o.Id == ordemServicoDto.Id)
                 .Include(o => o.Exames)
                 .First();
 
-            ordemServico.DataEmissao = ordemServicoDto.DataEmissao;
-            ordemServico.DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value;
             ordemServico.IdMedico = ordemServicoDto.IdMedico;
             ordemServico.IdPostoColeta = ordemServicoDto.IdPostoColeta;
             ordemServico.IdPaciente = ordemServicoDto.IdPaciente;
+            ordemServico.CodigoProtocolo = GerarCodigoProtocolo(ordemServicoDto.CodigoProtocolo, ordemServicoDto.IdPaciente);
+            ordemServico.CodigoPedidoMedico = ordemServicoDto.CodigoPedidoMedico;
+            ordemServico.DataEmissao = ordemServicoDto.DataEmissao;
+            ordemServico.DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value;
             ordemServico.NomeConvenio = ordemServicoDto.NomeConvenio;
 
             atualizarExames();
