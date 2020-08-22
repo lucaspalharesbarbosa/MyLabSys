@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MyLabSys.Factories.Interfaces;
 using MyLabSys.Models;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels;
@@ -14,42 +15,21 @@ namespace MyLabSys.Controllers {
     public class OrdemServicoController : Controller {
         private readonly MyLabSysContext _db;
         private readonly IOrdemServicoService _service;
+        private readonly IOrdemServicoGridModelFactory _gridModelFactory;
 
-        public OrdemServicoController(MyLabSysContext db, IOrdemServicoService service) {
+        public OrdemServicoController(MyLabSysContext db, IOrdemServicoService service, IOrdemServicoGridModelFactory gridModelFactory) {
             _db = db;
             _service = service;
+            _gridModelFactory = gridModelFactory;
         }
 
         public IActionResult Index() {
-            return View(new OrdemServicoGridModel {
-                OrdensServicos = _service.ObterDadosOrdensServicos()
-                    .Select(ordem => new ItemOrdemServicoGridModel {
-                        Id = ordem.Id,
-                        CodigoProtocolo = ordem.CodigoProtocolo,
-                        CodigoPedidoMedico = ordem.CodigoPedidoMedico,
-                        DataEmissao = ordem.DataEmissao,
-                        DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
-                        NomeConvenio = ordem.NomeConvenio,
-                        NomePaciente = ordem.NomePaciente
-                    }).ToArray()
-            });
+            return View(_gridModelFactory.Build());
         }
 
         [HttpPost]
         public IActionResult Index(string codigoProtocoloFiltrar) {
-            return View(new OrdemServicoGridModel {
-                CodigoProtocoloFiltrar = codigoProtocoloFiltrar,
-                OrdensServicos = _service.ObterDadosOrdensServicos(codigoProtocoloFiltrar)
-                    .Select(ordem => new ItemOrdemServicoGridModel {
-                        Id = ordem.Id,
-                        CodigoProtocolo = ordem.CodigoProtocolo,
-                        CodigoPedidoMedico = ordem.CodigoPedidoMedico,
-                        DataEmissao = ordem.DataEmissao,
-                        DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
-                        NomeConvenio = ordem.NomeConvenio,
-                        NomePaciente = ordem.NomePaciente
-                    }).ToArray()
-            });
+            return View(_gridModelFactory.Build(codigoProtocoloFiltrar));
         }
 
         public IActionResult Create() {
@@ -141,18 +121,7 @@ namespace MyLabSys.Controllers {
 
             await _db.SaveChangesAsync();
 
-            return View(nameof(Index), new OrdemServicoGridModel {
-                OrdensServicos = _service.ObterDadosOrdensServicos()
-                    .Select(ordem => new ItemOrdemServicoGridModel {
-                        Id = ordem.Id,
-                        CodigoProtocolo = ordem.CodigoProtocolo,
-                        CodigoPedidoMedico = ordem.CodigoPedidoMedico,
-                        DataEmissao = ordem.DataEmissao,
-                        DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
-                        NomeConvenio = ordem.NomeConvenio,
-                        NomePaciente = ordem.NomePaciente
-                    }).ToArray()
-            });
+            return View(nameof(Index), _gridModelFactory.Build());
         }
 
         private SelectListItem[] ObterExamesSelectList(bool inicializar = false) {
