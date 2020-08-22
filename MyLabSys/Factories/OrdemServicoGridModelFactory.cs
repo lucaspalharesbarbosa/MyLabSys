@@ -1,4 +1,5 @@
 ﻿using MyLabSys.Factories.Interfaces;
+using MyLabSys.Models.Enums;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels;
 using System.Linq;
@@ -30,7 +31,11 @@ namespace MyLabSys.Factories {
                         DataEmissao = ordem.DataEmissao,
                         DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
                         NomeConvenio = ordem.NomeConvenio,
-                        NomePaciente = ordem.NomePaciente
+                        NomePaciente = ordem.NomePaciente,
+                        EstaAberta = ordem.EstaAberta,
+                        DescricaoStatus = ordem.Status == StatusOrdemServico.Aberta
+                            ? "ABERTA"
+                            : "FECHADA"
                     }).ToArray()
             };
         }

@@ -17,5 +17,6 @@ namespace MyLabSys.ViewModels.Dtos {
         public string NomeMedico { get; set; }
         public string NomeConvenio { get; set; }
         public StatusOrdemServico Status { get; set; }
+        public bool EstaAberta { get; set; }
     }
 }

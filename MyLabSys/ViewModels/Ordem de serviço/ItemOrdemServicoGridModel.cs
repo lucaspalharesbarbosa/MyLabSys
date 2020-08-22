@@ -24,5 +24,10 @@ namespace MyLabSys.ViewModels {
 
         [Display(Name = "Paciente")]
         public string NomePaciente { get; set; }
+
+        [Display(Name = "Status")]
+        public string DescricaoStatus { get; set; }
+
+        public bool EstaAberta { get; set; }
     }
 }

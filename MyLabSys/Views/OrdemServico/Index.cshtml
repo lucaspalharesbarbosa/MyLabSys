@@ -36,6 +36,7 @@
                     <th>Convênio</th>
                     <th>Emissão</th>
                     <th>Previsao de entrega</th>
+                    <th>Status</th>
                     <th></th>
                 </tr>
             </thead>
@@ -48,6 +49,7 @@
                         <td>@Html.DisplayFor(modelItem => item.NomeConvenio)</td>
                         <td>@Html.DisplayFor(modelItem => item.DataEmissaoFormatada)</td>
                         <td>@Html.DisplayFor(modelItem => item.DataPrevisaoEntregaFormatada)</td>
+                        <td class="font-weight-bold @(item.EstaAberta ? "text-warning" : "text-success")">@Html.DisplayFor(modelItem => item.DescricaoStatus)</td>
                         <td style="text-align: center;">
                             <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
                         </td>

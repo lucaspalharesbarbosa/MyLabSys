@@ -103,7 +103,7 @@ namespace MyLabSys.Controllers {
                 DataEmissao = dadosOrdemServicoDto.DataEmissao,
                 DataPrevisaoEntrega = dadosOrdemServicoDto.DataPrevisaoEntrega,
                 IdsExames = dadosOrdemServicoDto.IdsExames.ToArray(),
-                EstaAberta = dadosOrdemServicoDto.Status == StatusOrdemServico.Aberta
+                EstaAberta = dadosOrdemServicoDto.EstaAberta
             });;
         }
         

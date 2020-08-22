@@ -170,7 +170,8 @@ namespace MyLabSys.Services {
                     NomePaciente = ordemServico.Paciente.Nome,
                     NomeMedico = ordemServico.Medico.Nome,
                     IdsExames = ordemServico.Exames.Select(e => e.IdExame),
-                    Status = ordemServico.Status
+                    Status = ordemServico.Status,
+                    EstaAberta = ordemServico.Status == StatusOrdemServico.Aberta
                 }).ToArray();
         }
 
