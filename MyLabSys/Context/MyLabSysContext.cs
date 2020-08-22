@@ -27,16 +27,15 @@ namespace MyLabSys.Models {
                 .WithMany(medico => medico.OrdensServicos)
                 .HasForeignKey(ordemServico => ordemServico.IdMedico)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<ExameOrdemServico>()
-                .HasOne(exameOrdem => exameOrdem.Exame)
-                .WithMany(exame => exame.OrdensServicos)
-                .HasForeignKey(exameOrdem => exameOrdem.IdExame)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ExameOrdemServico>()
-                .HasOne(exameOrdem => exameOrdem.OrdemServico)
-                .WithMany(ordemServico => ordemServico.Exames)
+            modelBuilder.Entity<OrdemServico>()
+                .HasMany(ordem => ordem.Exames)
+                .WithOne(exameOrdem => exameOrdem.OrdemServico)
                 .HasForeignKey(exameOrdem => exameOrdem.IdOrdemServico)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Exame>()
+                .HasMany(exame => exame.OrdensServicos)
+                .WithOne(exameOrdem => exameOrdem.Exame)
+                .HasForeignKey(exameOrdem => exameOrdem.IdExame)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

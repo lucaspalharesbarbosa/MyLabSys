@@ -10,7 +10,7 @@ using MyLabSys.Models;
 namespace MyLabSys.Migrations
 {
     [DbContext(typeof(MyLabSysContext))]
-    [Migration("20200820011803_CriarVinculosOrdemServicoEExameOrdemServico")]
+    [Migration("20200822011325_CriarVinculosOrdemServicoEExameOrdemServico")]
     partial class CriarVinculosOrdemServicoEExameOrdemServico
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,7 +187,7 @@ namespace MyLabSys.Migrations
                     b.HasOne("MyLabSys.Models.OrdemServico", "OrdemServico")
                         .WithMany("Exames")
                         .HasForeignKey("IdOrdemServico")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

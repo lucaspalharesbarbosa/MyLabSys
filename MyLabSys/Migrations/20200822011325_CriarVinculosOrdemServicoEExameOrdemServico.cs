@@ -69,7 +69,7 @@ namespace MyLabSys.Migrations
                         column: x => x.IdOrdemServico,
                         principalTable: "OrdensServicos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

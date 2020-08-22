@@ -185,7 +185,7 @@ namespace MyLabSys.Migrations
                     b.HasOne("MyLabSys.Models.OrdemServico", "OrdemServico")
                         .WithMany("Exames")
                         .HasForeignKey("IdOrdemServico")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

@@ -15,6 +15,14 @@
     <Compile Remove="Migrations\20200820000530_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
     <Compile Remove="Migrations\20200820001437_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
     <Compile Remove="Migrations\20200820001437_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
+    <Compile Remove="Migrations\20200820011803_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
+    <Compile Remove="Migrations\20200820011803_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
+    <Compile Remove="Migrations\20200822010427_AlterExameOrdemServicoOrdemSerivicoCascadeOnDelete.cs" />
+    <Compile Remove="Migrations\20200822010427_AlterExameOrdemServicoOrdemSerivicoCascadeOnDelete.Designer.cs" />
+    <Compile Remove="Migrations\20200822010832_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
+    <Compile Remove="Migrations\20200822010832_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
+    <Compile Remove="Migrations\20200822011217_CriarVinculosOrdemServicoEExameOrdemServico.cs" />
+    <Compile Remove="Migrations\20200822011217_CriarVinculosOrdemServicoEExameOrdemServico.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
