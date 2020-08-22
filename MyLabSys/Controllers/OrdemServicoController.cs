@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyLabSys.Factories.Interfaces;
 using MyLabSys.Models;
+using MyLabSys.Models.Enums;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels;
 using MyLabSys.ViewModels.Dtos;
@@ -101,8 +102,9 @@ namespace MyLabSys.Controllers {
                 CodigoPedidoMedico = dadosOrdemServicoDto.CodigoPedidoMedico,
                 DataEmissao = dadosOrdemServicoDto.DataEmissao,
                 DataPrevisaoEntrega = dadosOrdemServicoDto.DataPrevisaoEntrega,
-                IdsExames = dadosOrdemServicoDto.IdsExames.ToArray()
-            });
+                IdsExames = dadosOrdemServicoDto.IdsExames.ToArray(),
+                EstaAberta = dadosOrdemServicoDto.Status == StatusOrdemServico.Aberta
+            });;
         }
         
         [HttpPost]

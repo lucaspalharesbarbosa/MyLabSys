@@ -39,5 +39,7 @@ namespace MyLabSys.ViewModels {
         [Required(ErrorMessage = "O campo Exames é obrigatório")]
         [Display(Name = "Exames")]
         public int[] IdsExames { get; set; }
+
+        public bool EstaAberta { get; internal set; }
     }
 }

@@ -22,6 +22,16 @@
     <hr />
     @Html.HiddenFor(viewModel => viewModel.Id)
     <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-warning text-center" style="@(Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")" role="alert">
+                <strong>ABERTA</strong>
+            </div>
+            <div class="alert alert-success text-center" style="@(!Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")" role="alert">
+                <strong>FECHADA</strong>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="CodigoProtocolo" class="control-label"></label>

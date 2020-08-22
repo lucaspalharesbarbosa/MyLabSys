@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyLabSys.Models.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace MyLabSys.ViewModels.Dtos {
@@ -15,5 +16,6 @@ namespace MyLabSys.ViewModels.Dtos {
         public string NomePaciente { get; set; }
         public string NomeMedico { get; set; }
         public string NomeConvenio { get; set; }
+        public StatusOrdemServico Status { get; set; }
     }
 }
