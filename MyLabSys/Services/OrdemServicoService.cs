@@ -122,6 +122,7 @@ namespace MyLabSys.Services {
 
         public void Excluir(int id) {
             var ordemServico = _db.OrdensServicos
+                .Where(o => o.Id == id)
                 .Include(o => o.Exames)
                 .FirstOrDefault();
             var ordemServicoExiste = ordemServico != null;
