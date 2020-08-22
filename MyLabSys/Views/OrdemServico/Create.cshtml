@@ -30,10 +30,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="alert alert-warning text-center" style="@(Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")" role="alert">
-                <strong>ABERTA</strong>
+                <i class="fas fa-unlink"></i> <strong>ABERTA</strong>
             </div>
             <div id="alerta-fechada" class="alert alert-success text-center" style="@(!Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")" role="alert">
-                <strong>FECHADA</strong>
+                <i class="fas fa-link"></i> <strong>FECHADA</strong>
             </div>
         </div>
     </div>
