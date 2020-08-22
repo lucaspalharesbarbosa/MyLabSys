@@ -132,6 +132,22 @@ namespace MyLabSys.Services {
             }
         }
 
+        public void Fechar(int id) {
+            var ordemServico = _db.OrdensServicos.Find(id);
+
+            ordemServico.Status = StatusOrdemServico.Fechada;
+
+            _db.Update(ordemServico);
+        }
+
+        public void Reabrir(int id) {
+            var ordemServico = _db.OrdensServicos.Find(id);
+
+            ordemServico.Status = StatusOrdemServico.Aberta;
+
+            _db.Update(ordemServico);
+        }
+
         public OrdemServicoDto[] ObterDadosOrdensServicos(int? id = null) {
             var queryOrdensServicos = _db.OrdensServicos.AsQueryable();
 

@@ -120,6 +120,32 @@ namespace MyLabSys.Controllers {
             return View(nameof(Index), _gridModelFactory.Build());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Fechar(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            _service.Fechar(id.Value);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reabrir(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            _service.Reabrir(id.Value);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(id);
+        }
+
         public JsonResult ObterNomeConvenioPaciente(int idPaciente) {
             var nomeConvenio = _db.Pacientes
                 .Where(p => p.Id == idPaciente)

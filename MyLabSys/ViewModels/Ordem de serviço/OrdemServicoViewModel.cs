@@ -40,6 +40,6 @@ namespace MyLabSys.ViewModels {
         [Display(Name = "Exames")]
         public int[] IdsExames { get; set; }
 
-        public bool EstaAberta { get; internal set; }
+        public bool EstaAberta { get; set; }
     }
 }
