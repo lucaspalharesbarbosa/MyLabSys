@@ -9,13 +9,13 @@
 <form asp-action="Create" autocomplete="off">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary" style="@(Model.EstaAberta ? "display: normal" : "display: none")">
+        <button type="submit" class="btn btn-primary" style="@(Model.EstaAberta || Model.Id == 0 ? "display: normal" : "display: none")">
             <i class="fas fa-save"></i> Salvar
         </button>
         <button type="button" class="btn btn-success" style="@(Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")" onclick="Fechar(@Model.Id)">
             <i class="fas fa-link"></i> Fechar
         </button>
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-confimar-reabertura" style="@(!Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")">
+        <button type="button" class="btn btn-warning text-white" data-toggle="modal" data-target="#modal-confimar-reabertura" style="@(!Model.EstaAberta && Model.Id > 0 ? "display: normal" : "display: none")">
             <i class="fas fa-unlink"></i> Reabrir
         </button>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-confimar-exclusao" style="@(Model.Id > 0 && Model.EstaAberta ? "display: normal" : "display: none")">
