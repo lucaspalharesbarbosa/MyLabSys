@@ -9,14 +9,14 @@
 <form asp-action="Index" autocomplete="off">
     <div class="row">
         <div class="col-lg-3">
-            <a class="btn btn-primary" asp-controller="OrdemServico" asp-action="Create">Novo</a>
+            <a class="btn btn-primary" asp-controller="OrdemServico" asp-action="Create"><i class="fas fa-plus"></i> Novo</a>
         </div>
         <div class="col-lg-9">
             <div class="float-right">
                 <div class="input-group">
-                    <input asp-for="CodigoProtocoloFiltrar" class="form-group" type="text" placeholder="Informe o protocolo" />
+                    <input asp-for="CodigoProtocoloFiltrar" class="form-group txt-codigo-protocolo-filtrar" type="text" placeholder="Informe o protocolo" />
                     <div class="input-group-append">
-                        <button class="btn btn-sm btn-default btn-info btn-pesquisar" type="submit">Pesquisar</button>
+                        <button class="btn btn-sm btn-default btn-dark btn-pesquisar" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                         <td>@Html.DisplayFor(modelItem => item.DataEmissaoFormatada)</td>
                         <td>@Html.DisplayFor(modelItem => item.DataPrevisaoEntregaFormatada)</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
                 }

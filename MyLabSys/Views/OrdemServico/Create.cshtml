@@ -9,9 +9,15 @@
 <form asp-action="Create" autocomplete="off">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <input type="submit" value="Salvar" class="btn btn-success" />
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-confimar-exclusao" style="@(Model.Id > 0 ? "display: normal" : "display: none")">Excluir</button>
-        <a asp-action="Index" class="btn btn-outline-info">Voltar</a>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Salvar
+        </button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-confimar-exclusao" style="@(Model.Id > 0 ? "display: normal" : "display: none")">
+            <i class="fas fa-trash-alt"></i> Excluir
+        </button>
+        <a asp-action="Index" class="btn btn-outline-info">
+            <i class="fas fa-reply"></i> Voltar
+        </a>
     </div>
     <hr />
     @Html.HiddenFor(viewModel => viewModel.Id)
@@ -111,8 +117,8 @@
             <div class="modal-footer">
                 <form asp-action="Delete">
                     @Html.HiddenFor(viewModel => viewModel.Id)
-                    <button type="submit" class="btn btn-primary">Confirmar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Confirmar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Fechar</button>
                 </form>
             </div>
         </div>
