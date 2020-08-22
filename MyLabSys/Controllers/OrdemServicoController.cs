@@ -22,16 +22,16 @@ namespace MyLabSys.Controllers {
 
         public IActionResult Index() {
             return View(new OrdemServicoGridModel {
-                OrdensServicos = _service.ObterOrdensServicos()
-                .Select(ordem => new ItemOrdemServicoGridModel {
-                    Id = ordem.Id,
-                    CodigoProtocolo = ordem.CodigoProtocolo,
-                    CodigoPedidoMedico = ordem.CodigoPedidoMedico,
-                    DataEmissao = ordem.DataEmissao,
-                    DataPrevisaoEntrega = ordem.DataPrevisaoEntrega,
-                    NomeConvenio = ordem.NomeConvenio,
-                    NomePaciente = ordem.Paciente.Nome
-                }).ToArray()
+                OrdensServicos = _service.ObterDadosOrdensServicos()
+                    .Select(ordem => new ItemOrdemServicoGridModel {
+                        Id = ordem.Id,
+                        CodigoProtocolo = ordem.CodigoProtocolo,
+                        CodigoPedidoMedico = ordem.CodigoPedidoMedico,
+                        DataEmissao = ordem.DataEmissao,
+                        DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
+                        NomeConvenio = ordem.NomeConvenio,
+                        NomePaciente = ordem.NomePaciente
+                    }).ToArray()
             });
         }
 
@@ -39,16 +39,16 @@ namespace MyLabSys.Controllers {
         public IActionResult Index(string codigoProtocoloFiltrar) {
             return View(new OrdemServicoGridModel {
                 CodigoProtocoloFiltrar = codigoProtocoloFiltrar,
-                OrdensServicos = _service.ObterOrdensServicos(codigoProtocoloFiltrar)
-                .Select(ordem => new ItemOrdemServicoGridModel {
-                    Id = ordem.Id,
-                    CodigoProtocolo = ordem.CodigoProtocolo,
-                    CodigoPedidoMedico = ordem.CodigoPedidoMedico,
-                    DataEmissao = ordem.DataEmissao,
-                    DataPrevisaoEntrega = ordem.DataPrevisaoEntrega,
-                    NomeConvenio = ordem.NomeConvenio,
-                    NomePaciente = ordem.Paciente.Nome
-                }).ToArray()
+                OrdensServicos = _service.ObterDadosOrdensServicos(codigoProtocoloFiltrar)
+                    .Select(ordem => new ItemOrdemServicoGridModel {
+                        Id = ordem.Id,
+                        CodigoProtocolo = ordem.CodigoProtocolo,
+                        CodigoPedidoMedico = ordem.CodigoPedidoMedico,
+                        DataEmissao = ordem.DataEmissao,
+                        DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
+                        NomeConvenio = ordem.NomeConvenio,
+                        NomePaciente = ordem.NomePaciente
+                    }).ToArray()
             });
         }
 
@@ -71,7 +71,7 @@ namespace MyLabSys.Controllers {
                 ViewData["PacientesSelectList"] = new SelectList(_db.Pacientes, "Id", "Nome", viewModel.IdPaciente);
                 ViewData["MedicosSelectList"] = new SelectList(_db.Medicos, "Id", "Nome", viewModel.IdMedico);
                 ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", viewModel.IdPostoColeta);
-                ViewData["ExamesSelectList"] = ObterExamesSelectList(true);
+                ViewData["ExamesSelectList"] = ObterExamesSelectList();
 
                 return View(viewModel);
             }
@@ -115,7 +115,7 @@ namespace MyLabSys.Controllers {
             ViewData["PostosColetasSelectList"] = new SelectList(_db.PostosColetas, "Id", "Descricao", ordemServico.IdPostoColeta);
             ViewData["ExamesSelectList"] = ObterExamesSelectList(true);
 
-            return View("Create", new OrdemServicoViewModel {
+            return View(nameof(Create), new OrdemServicoViewModel {
                 Id = ordemServico.Id,
                 IdPaciente = ordemServico.IdPaciente,
                 IdMedico = ordemServico.IdMedico,
@@ -126,8 +126,32 @@ namespace MyLabSys.Controllers {
                 DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
                 NomeConvenio = ordemServico.NomeConvenio,
                 IdsExames = ordemServico.Exames
-                    .Select(e => e.Id)
+                    .Select(e => e.IdExame)
                     .ToArray()
+            });
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            _service.Excluir(id.Value);
+
+            await _db.SaveChangesAsync();
+
+            return View(nameof(Index), new OrdemServicoGridModel {
+                OrdensServicos = _service.ObterDadosOrdensServicos()
+                    .Select(ordem => new ItemOrdemServicoGridModel {
+                        Id = ordem.Id,
+                        CodigoProtocolo = ordem.CodigoProtocolo,
+                        CodigoPedidoMedico = ordem.CodigoPedidoMedico,
+                        DataEmissao = ordem.DataEmissao,
+                        DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
+                        NomeConvenio = ordem.NomeConvenio,
+                        NomePaciente = ordem.NomePaciente
+                    }).ToArray()
             });
         }
 

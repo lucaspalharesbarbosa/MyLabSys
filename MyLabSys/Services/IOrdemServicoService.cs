@@ -3,7 +3,8 @@ using MyLabSys.ViewModels.Dtos;
 
 namespace MyLabSys.Services.Interfaces {
     public interface IOrdemServicoService {
-        bool Salvar(OrdemServicoDto ordemServicoDto);
-        OrdemServico[] ObterOrdensServicos(string codigoProtocolo = "");
+        void Salvar(OrdemServicoDto ordemServicoDto);
+        void Excluir(int id);
+        OrdemServicoDto[] ObterDadosOrdensServicos(string codigoProtocolo = "");
     }
 }

@@ -13,16 +13,14 @@ namespace MyLabSys.Services {
             _db = db;
         }
 
-        public bool Salvar(OrdemServicoDto ordemServicoDto) {
-            var ordemServicoJaCadastrada = ordemServicoDto.Id > 0;
+        public void Salvar(OrdemServicoDto ordemServicoDto) {
+            var ordemServicoNaoCadastrada = ordemServicoDto.Id == 0;
 
-            if (ordemServicoJaCadastrada) {
+            if (ordemServicoNaoCadastrada) {
                 Incluir(ordemServicoDto);
             } else {
                 Editar(ordemServicoDto);
             }
-
-            return true;
         }
 
         private void Incluir(OrdemServicoDto ordemServicoDto) {
@@ -70,47 +68,57 @@ namespace MyLabSys.Services {
                 var idsExamesIncluir = ordemServicoDto.IdsExames
                     .Where(idExame => !idsExamesExistentes.Contains(idExame))
                     .ToArray();
-                var exames = ordemServico.Exames
-                    .Where(exame => ordemServicoDto.IdsExames.Contains(exame.Id))
-                    .Select(exame => new ExameOrdemServico {
-                        OrdemServico = ordemServico,
-                        IdExame = exame.Id,
-                        Preco = exame.Preco
-                    }).ToArray();
                 var examesIncluir = _db.Exames
                     .Where(exame => idsExamesIncluir.Contains(exame.Id))
                     .ToArray();
 
-                foreach (var idExameIncluir in idsExamesIncluir) {
-                    var exameIncluir = examesIncluir.First(e => e.Id == idExameIncluir);
-
-                    var novoExame = new ExameOrdemServico {
-                        OrdemServico = ordemServico,
-                        Exame = exameIncluir,
+                foreach (var exameIncluir in examesIncluir) {
+                    _db.ExamesOrdensServicos.Add(new ExameOrdemServico {
+                        IdOrdemServico = ordemServico.Id,
+                        IdExame = exameIncluir.Id,
                         Preco = exameIncluir.Preco
-                    };
+                    });
                 }
+                var idsTodosExames = _db.Exames.Select(e => e.Id).ToArray();
 
-                var idsExamesExcluir = idsExamesIncluir
-                    .Where(idExame => !idsExamesExistentes.Contains(idExame))
-                    .ToArray();
                 var examesExcluir = _db.ExamesOrdensServicos
-                    .Where(exame => exame.IdOrdemServico == ordemServicoDto.Id
-                        && idsExamesExcluir.Contains(exame.Id))
+                    .Where(exameOrdem => exameOrdem.IdOrdemServico == ordemServicoDto.Id
+                        && !ordemServicoDto.IdsExames.Contains(exameOrdem.IdExame)
+                        && !idsExamesIncluir.Contains(exameOrdem.IdExame))
                     .ToArray();
 
-                foreach (var idExameExcluir in idsExamesExcluir) {
-                    var exameExcluir = examesExcluir.First(e => e.Id == idExameExcluir);
-
+                foreach (var exameExcluir in examesExcluir) {
                     _db.Remove(exameExcluir);
                 }
             }
         }
 
-        public OrdemServico[] ObterOrdensServicos(string codigoProtocolo = "") {
+        public void Excluir(int id) {
+            var ordemServico = _db.OrdensServicos
+                .Include(o => o.Exames)
+                .FirstOrDefault();
+            var ordemServicoExiste = ordemServico != null;
+
+            if (ordemServicoExiste) {
+                _db.Remove(ordemServico);
+            }
+        }
+
+        public OrdemServicoDto[] ObterDadosOrdensServicos(string codigoProtocolo = "") {
             var ordensServicos = _db.OrdensServicos
-                .Include(ordem => ordem.Paciente)
-                .ToArray();
+                .Select(ordemServico => new OrdemServicoDto {
+                    Id = ordemServico.Id,
+                    IdPaciente = ordemServico.IdPaciente,
+                    IdMedico = ordemServico.IdMedico,
+                    IdPostoColeta = ordemServico.IdPostoColeta,
+                    CodigoProtocolo = ordemServico.CodigoProtocolo,
+                    CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
+                    NomeConvenio = ordemServico.NomeConvenio,
+                    DataEmissao = ordemServico.DataEmissao,
+                    DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
+                    NomePaciente = ordemServico.Paciente.Nome,
+                    NomeMedico = ordemServico.Medico.Nome
+                }).ToArray();
 
             var filtrarPorCodigoProtocolo = !string.IsNullOrEmpty(codigoProtocolo);
 
