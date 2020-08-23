@@ -58,6 +58,10 @@ namespace MyLabSys {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "PacienteArea",
+                    pattern: "{area:exists}/{controller=Paciente}/{action=Index}/{id?}");
             });
         }
     }
