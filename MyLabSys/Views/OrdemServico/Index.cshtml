@@ -27,8 +27,8 @@
 <br />
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered table-responsive-sm">
-            <thead>
+        <table class="table table-bordered table-striped table-responsive-sm">
+            <thead class="thead-dark">
                 <tr>
                     <th>Protocolo</th>
                     <th>Código do pedido</th>
@@ -51,7 +51,7 @@
                         <td>@Html.DisplayFor(modelItem => item.DataPrevisaoEntregaFormatada)</td>
                         <td class="font-weight-bold @(item.EstaAberta ? "text-warning" : "text-success")">@Html.DisplayFor(modelItem => item.DescricaoStatus)</td>
                         <td style="text-align: center;">
-                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="text-dark"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
                 }

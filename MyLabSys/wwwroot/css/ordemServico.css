@@ -14,3 +14,8 @@
 input#ValorTotalFormatado, input#DescricaoDescontoConvenio {
     font-size: 20px;
 }
+
+legend {
+    color: #6c6c6c;
+    border-bottom: 1px solid #6c6c6c;
+}

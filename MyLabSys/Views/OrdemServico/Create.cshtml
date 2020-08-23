@@ -114,16 +114,19 @@
             </div>
         </div>
     </div>
-    <div class="row" style="@(Model.Id > 0 ? "display: normal" : "display: none")">
-        <div class="col-md-6">
-            <label asp-for="ValorDescontoConvenio" class="control-label"></label>
-            <input asp-for="DescricaoDescontoConvenio" class="form-control font-weight-bold" disabled />
+    <fieldset style="@(Model.Id > 0 ? "display: normal" : "display: none")">
+        <legend class="font-weight-bold">Dados de faturamento</legend>
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="ValorDescontoConvenio" class="control-label"></label>
+                <input asp-for="DescricaoDescontoConvenio" class="form-control font-weight-bold" disabled />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ValorTotal" class="control-label"></label>
+                <input asp-for="ValorTotalFormatado" class="form-control font-weight-bold" disabled />
+            </div>
         </div>
-        <div class="col-md-6">
-            <label asp-for="ValorTotal" class="control-label"></label>
-            <input asp-for="ValorTotalFormatado" class="form-control font-weight-bold" disabled />
-        </div>
-    </div>
+    </fieldset>
     <hr />
 </form>
 
