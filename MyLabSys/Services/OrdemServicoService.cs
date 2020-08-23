@@ -14,17 +14,21 @@ namespace MyLabSys.Services {
             _db = db;
         }
 
-        public void Salvar(OrdemServicoDto ordemServicoDto) {
+        public OrdemServico Salvar(OrdemServicoDto ordemServicoDto) {
             var ordemServicoNaoCadastrada = ordemServicoDto.Id == 0;
 
+            OrdemServico ordemServico;
+
             if (ordemServicoNaoCadastrada) {
-                Incluir(ordemServicoDto);
+                ordemServico = Incluir(ordemServicoDto);
             } else {
-                Editar(ordemServicoDto);
+                ordemServico = Editar(ordemServicoDto);
             }
+
+            return ordemServico;
         }
 
-        private void Incluir(OrdemServicoDto ordemServicoDto) {
+        private OrdemServico Incluir(OrdemServicoDto ordemServicoDto) {
             var ordemServico = new OrdemServico {
                 IdPaciente = ordemServicoDto.IdPaciente,
                 IdMedico = ordemServicoDto.IdMedico,
@@ -45,6 +49,8 @@ namespace MyLabSys.Services {
             ordemServico.Exames = exames;
 
             _db.OrdensServicos.Add(ordemServico);
+
+            return ordemServico;
         }
 
         private string GerarCodigoProtocolo(string codigoProtocolo, int idPaciente) {
@@ -71,7 +77,7 @@ namespace MyLabSys.Services {
             return codigoProtocoloGerado;
         }
 
-        private void Editar(OrdemServicoDto ordemServicoDto) {
+        private OrdemServico Editar(OrdemServicoDto ordemServicoDto) {
             var ordemServico = _db.OrdensServicos
                 .Where(o => o.Id == ordemServicoDto.Id)
                 .Include(o => o.Exames)
@@ -86,6 +92,8 @@ namespace MyLabSys.Services {
             ordemServico.DataPrevisaoEntrega = ordemServicoDto.DataPrevisaoEntrega.Value;
 
             atualizarExames();
+
+            return ordemServico;
 
             void atualizarExames() {
                 var idsExamesExistentes = ordemServico.Exames
@@ -131,8 +139,8 @@ namespace MyLabSys.Services {
             }
         }
 
-        public void Fechar(int id) {
-            var ordemServico = _db.OrdensServicos.Find(id);
+        public void Fechar(OrdemServicoDto ordemServicoDto) {
+            var ordemServico = Salvar(ordemServicoDto);
 
             ordemServico.Status = StatusOrdemServico.Fechada;
 

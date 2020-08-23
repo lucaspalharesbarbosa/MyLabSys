@@ -6,7 +6,7 @@
 
 <h2>@(string.IsNullOrEmpty(Model.CodigoProtocolo) ? "Nova ordem de serviço" : $"Ordem de serviço - {Model.CodigoProtocolo}")</h2>
 <hr />
-<form asp-action="Create" autocomplete="off">
+<form asp-action="Create" id="form-ordem-servico" autocomplete="off">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary" style="@(Model.EstaAberta || Model.Id == 0 ? "display: normal" : "display: none")">
@@ -218,32 +218,31 @@
             });
         });
 
-        var Fechar = function (id) {
-            var urlFecharOrdemServico = "/OrdemServico/Fechar";
-
-            $.post(urlFecharOrdemServico, { id: id }, function () {
-                location.reload();
-            });
-        }
-
-        var Reabrir = function (id) {
-            var urlReabrirOrdemServico = "/OrdemServico/Reabrir";
-
-            $.post(urlReabrirOrdemServico, { id: id }, function () {
-                location.reload();
-            });
-        }
-
         $(function () {
             var selectPaciente = $('#IdPaciente');
             var inputNomeConvenioPaciente = $('#NomeConvenioPaciente');
-            var urlObterNomeConvenioPaciente = "/OrdemServico/ObterNomeConvenioPaciente";
-            
+            var urlObterNomeConvenioPaciente = '@Url.Action("ObterNomeConvenioPaciente", "OrdemServico")';
+
             selectPaciente.change(function () {
                 $.getJSON(urlObterNomeConvenioPaciente, { idPaciente: selectPaciente.val() }, function (nomeConvenio) {
                     inputNomeConvenioPaciente.val(nomeConvenio);
                 });
             });
         });
+
+        var Fechar = function (id) {
+            var urlFecharOrdemServico = '@Url.Action("Fechar", "OrdemServico")';
+
+            $.post(urlFecharOrdemServico, $('#form-ordem-servico').serialize(), function () {
+                location.reload();
+            });
+        }
+        var Reabrir = function (id) {
+            var urlReabrirOrdemServico = '@Url.Action("Reabrir", "OrdemServico")'
+
+            $.post(urlReabrirOrdemServico, { id: id }, function () {
+                location.reload();
+            });
+        }
     </script>
 }

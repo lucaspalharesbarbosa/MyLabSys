@@ -124,16 +124,33 @@ namespace MyLabSys.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Fechar(int? id) {
-            if (id == null) {
-                return NotFound();
+        public async Task<IActionResult> Fechar(OrdemServicoViewModel viewModel) {
+            if (!ModelState.IsValid) {
+                ViewData["PacientesSelectList"] = ObterPacientesSelectList(viewModel.IdPaciente);
+                ViewData["MedicosSelectList"] = ObterMedicosSelectList(viewModel.IdMedico);
+                ViewData["PostosColetasSelectList"] = ObterPostosColetasSelectList(viewModel.IdPostoColeta);
+                ViewData["ExamesSelectList"] = ObterExamesSelectList();
+
+                return View(viewModel);
             }
 
-            _service.Fechar(id.Value);
+            var ordemServicoDto = new OrdemServicoDto {
+                Id = viewModel.Id,
+                IdPaciente = viewModel.IdPaciente.Value,
+                IdMedico = viewModel.IdMedico.Value,
+                IdPostoColeta = viewModel.IdPostoColeta.Value,
+                CodigoProtocolo = viewModel.CodigoProtocolo,
+                CodigoPedidoMedico = viewModel.CodigoPedidoMedico,
+                DataEmissao = viewModel.DataEmissao,
+                DataPrevisaoEntrega = viewModel.DataPrevisaoEntrega,
+                IdsExames = viewModel.IdsExames
+            };
+
+            _service.Fechar(ordemServicoDto);
 
             await _db.SaveChangesAsync();
 
-            return Ok(id);
+            return Ok(true);
         }
 
         [HttpPost]
