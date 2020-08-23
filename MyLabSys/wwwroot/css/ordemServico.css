@@ -10,3 +10,7 @@
 .txt-codigo-protocolo-filtrar {
     width: 300px;
 }
+
+input#ValorTotalFormatado, input#DescricaoDescontoConvenio {
+    font-size: 20px;
+}

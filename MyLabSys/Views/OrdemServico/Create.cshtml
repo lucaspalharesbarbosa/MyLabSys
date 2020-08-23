@@ -114,6 +114,16 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label asp-for="ValorDescontoConvenio" class="control-label"></label>
+            <input asp-for="DescricaoDescontoConvenio" class="form-control font-weight-bold" disabled />
+        </div>
+        <div class="col-md-6">
+            <label asp-for="ValorTotal" class="control-label"></label>
+            <input asp-for="ValorTotalFormatado" class="form-control font-weight-bold" disabled />
+        </div>
+    </div>
     <hr />
 </form>
 
@@ -183,7 +193,7 @@
                 var atributoRequired = $(this).attr('data-val-required');
                 var ehCampoRequired = atributoRequired != undefined;
                 var atributoDisabled = $(this).attr('disabled');
-                var naoEhElementoDisabled = atributoDisabled == undefined;
+                var naoPossuiAtributoDisabled = atributoDisabled == undefined;
                 var ordemServicoEstaFechada = $("#alerta-fechada").is(":visible");
 
                 if (ehCampoRequired) {
@@ -198,7 +208,7 @@
                 if (ordemServicoEstaFechada) {
                     $(this).prop("disabled", true);
                 } else {
-                    if (naoEhElementoDisabled) {
+                    if (naoPossuiAtributoDisabled) {
                         $(this).prop("disabled", false);
                     }
                 }

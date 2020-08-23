@@ -95,7 +95,7 @@ namespace MyLabSys.Controllers {
             return View(nameof(Create), new OrdemServicoViewModel {
                 Id = dadosOrdemServicoDto.Id,
                 IdPaciente = dadosOrdemServicoDto.IdPaciente,
-                NomeConvenioPaciente = dadosOrdemServicoDto.NomeConvenio,
+                NomeConvenioPaciente = $"{dadosOrdemServicoDto.NomeConvenio} (Desconto: {dadosOrdemServicoDto.PercentualDescontoConvenio})",
                 IdMedico = dadosOrdemServicoDto.IdMedico,
                 IdPostoColeta = dadosOrdemServicoDto.IdPostoColeta,
                 CodigoProtocolo = dadosOrdemServicoDto.CodigoProtocolo,
@@ -103,8 +103,11 @@ namespace MyLabSys.Controllers {
                 DataEmissao = dadosOrdemServicoDto.DataEmissao,
                 DataPrevisaoEntrega = dadosOrdemServicoDto.DataPrevisaoEntrega,
                 IdsExames = dadosOrdemServicoDto.IdsExames.ToArray(),
-                EstaAberta = dadosOrdemServicoDto.EstaAberta
-            });;
+                EstaAberta = dadosOrdemServicoDto.EstaAberta,
+                PercentualDescontoConvenio = dadosOrdemServicoDto.PercentualDescontoConvenio,
+                ValorDescontoConvenio = dadosOrdemServicoDto.ValorDescontoConvenio,
+                ValorTotal = dadosOrdemServicoDto.ValorTotal
+            });
         }
         
         [HttpPost]
@@ -147,12 +150,15 @@ namespace MyLabSys.Controllers {
         }
 
         public JsonResult ObterNomeConvenioPaciente(int idPaciente) {
-            var nomeConvenio = _db.Pacientes
+            var dadosConvenio = _db.Pacientes
                 .Where(p => p.Id == idPaciente)
-                .Select(p => p.Convenio.Nome)
-                .FirstOrDefault();
-            nomeConvenio = !string.IsNullOrEmpty(nomeConvenio)
-                ? nomeConvenio
+                .Select(p => new {
+                    p.Convenio.Nome,
+                    p.Convenio.PercentualDesconto
+                }).FirstOrDefault();
+            var pacienteTemConvenio = dadosConvenio != null;
+            var nomeConvenio = pacienteTemConvenio
+                ? $"{dadosConvenio.Nome} (Desconto: {dadosConvenio.PercentualDesconto:0.##}%)"
                 : "Sem convênio";
 
             return Json(nomeConvenio);

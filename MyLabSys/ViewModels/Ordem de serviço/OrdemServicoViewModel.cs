@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MyLabSys.ViewModels {
     public class OrdemServicoViewModel {
@@ -41,5 +42,19 @@ namespace MyLabSys.ViewModels {
         public int[] IdsExames { get; set; }
 
         public bool EstaAberta { get; set; }
+
+        [Display(Name = "Desconto do convênio")]
+        public decimal ValorDescontoConvenio { get; set; }
+
+        public decimal PercentualDescontoConvenio { get; set; }
+
+        [JsonIgnore]
+        public string DescricaoDescontoConvenio => $"{ValorDescontoConvenio:C} ({PercentualDescontoConvenio:0.##}%)";
+
+        [Display(Name = "Valor total")]
+        public decimal? ValorTotal { get; set; }
+
+        [JsonIgnore]
+        public string ValorTotalFormatado => $"{ValorTotal ?? decimal.Zero:C}";
     }
 }

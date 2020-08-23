@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyLabSys.Models;
 using MyLabSys.Models.Enums;
@@ -90,7 +92,7 @@ namespace MyLabSys.Services {
 
             void atualizarExames() {
                 var idsExamesExistentes = ordemServico.Exames
-                    .Select(exame => exame.Id)
+                    .Select(exameOrdem => exameOrdem.IdExame)
                     .ToArray();
                 var idsExamesIncluir = ordemServicoDto.IdsExames
                     .Where(idExame => !idsExamesExistentes.Contains(idExame))
@@ -157,22 +159,55 @@ namespace MyLabSys.Services {
             }
 
             return queryOrdensServicos
-                .Select(ordemServico => new OrdemServicoDto {
-                    Id = ordemServico.Id,
-                    IdPaciente = ordemServico.IdPaciente,
-                    IdMedico = ordemServico.IdMedico,
-                    IdPostoColeta = ordemServico.IdPostoColeta,
-                    CodigoProtocolo = ordemServico.CodigoProtocolo,
-                    CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
+                .Select(ordemServico => new {
+                    ordemServico.Id,
+                    ordemServico.IdPaciente,
+                    ordemServico.IdMedico,
+                    ordemServico.IdPostoColeta,
+                    ordemServico.CodigoProtocolo,
+                    ordemServico.CodigoPedidoMedico,
                     NomeConvenio = ordemServico.Paciente.Convenio.Nome,
-                    DataEmissao = ordemServico.DataEmissao,
-                    DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
+                    ordemServico.DataEmissao,
+                    ordemServico.DataPrevisaoEntrega,
                     NomePaciente = ordemServico.Paciente.Nome,
                     NomeMedico = ordemServico.Medico.Nome,
                     IdsExames = ordemServico.Exames.Select(e => e.IdExame),
-                    Status = ordemServico.Status,
-                    EstaAberta = ordemServico.Status == StatusOrdemServico.Aberta
-                }).ToArray();
+                    ordemServico.Status,
+                    EstaAberta = ordemServico.Status == StatusOrdemServico.Aberta,
+                    TemConvenio = ordemServico.Paciente.IdConvenio.HasValue,
+                    ValorTotal = ordemServico.Exames.Sum(exame => exame.Preco),
+                    PercentualDescontoConvenio = ordemServico.Paciente.Convenio.PercentualDesconto
+                })
+                .ToArray()
+                .Select(ordemServico => {
+                    var temConvenio = ordemServico.TemConvenio;
+                    var valorDescontoConvenio = temConvenio
+                        ? (ordemServico.PercentualDescontoConvenio / 100) * ordemServico.ValorTotal
+                        : decimal.Zero;
+                    var valorTotal = ordemServico.ValorTotal - valorDescontoConvenio;
+
+                    return new OrdemServicoDto {
+                        Id = ordemServico.Id,
+                        IdPaciente = ordemServico.IdPaciente,
+                        IdMedico = ordemServico.IdMedico,
+                        IdPostoColeta = ordemServico.IdPostoColeta,
+                        CodigoProtocolo = ordemServico.CodigoProtocolo,
+                        CodigoPedidoMedico = ordemServico.CodigoPedidoMedico,
+                        NomeConvenio = ordemServico.NomeConvenio,
+                        DataEmissao = ordemServico.DataEmissao,
+                        DataPrevisaoEntrega = ordemServico.DataPrevisaoEntrega,
+                        NomePaciente = ordemServico.NomePaciente,
+                        NomeMedico = ordemServico.NomeMedico,
+                        IdsExames = ordemServico.IdsExames.ToArray(),
+                        Status = ordemServico.Status,
+                        EstaAberta = ordemServico.EstaAberta,
+                        TemConvenio = ordemServico.TemConvenio,
+                        PercentualDescontoConvenio = ordemServico.PercentualDescontoConvenio,
+                        ValorDescontoConvenio = valorDescontoConvenio,
+                        ValorTotal = valorTotal,
+                    };
+                })
+                .ToArray();
         }
 
         public OrdemServicoDto[] ObterDadosOrdensServicosPorProtocolo(string codigoProtocolo) {
