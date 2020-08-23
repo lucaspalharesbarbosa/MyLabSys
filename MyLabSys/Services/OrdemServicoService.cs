@@ -4,12 +4,19 @@ using MyLabSys.Models.Enums;
 using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels.Dtos;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace MyLabSys.Services {
     public class OrdemServicoService : IOrdemServicoService {
         private readonly MyLabSysContext _db;
+        private const string HEMOGRAMA = "Hemograma";
+        private const string GLICEMIA = "Glicemia";
+        private const string EXAME_URINA = "Exame de urina";
+        private const string EXAME_FEZES = "Exame de fezes";
+        private const string TGO_TGP = "TGO (AST) TGP (ALP)";
+        private const string COVID19 = "Teste COVID-19 (RT-PCR)";
 
         public OrdemServicoService(MyLabSysContext db) {
             _db = db;
@@ -146,7 +153,86 @@ namespace MyLabSys.Services {
             ordemServico.SenhaPaciente = GerarSenhaPaciente(ordemServicoDto.CodigoProtocolo);
             ordemServico.Status = StatusOrdemServico.Fechada;
 
+            GerarResultadosExames(ordemServicoDto);
+
             _db.Update(ordemServico);
+        }
+
+        private void GerarResultadosExames(OrdemServicoDto ordemServicoDto) {
+            var dadosExamesOrdemServico = _db.ExamesOrdensServicos
+                .Where(exameOrdem => exameOrdem.IdOrdemServico == ordemServicoDto.Id)
+                .Select(exameOrdem => new {
+                    exameOrdem.Id,
+                    exameOrdem.IdExame,
+                    exameOrdem.Exame.Descricao,
+                    exameOrdem.Exame.Preco
+                }).ToArray();
+
+
+            var stringBuilder = new StringBuilder();
+            string descricaoResultadoExame;
+
+            foreach (var dadosExame in dadosExamesOrdemServico) {
+                switch (dadosExame.Descricao) {
+                    case HEMOGRAMA: {
+                        stringBuilder.Append("Homoglobina: 15,1 ---------- 13 a 16 g/dL");
+                        stringBuilder.Append("\nHematrocrito: 44,8 ---------- 38 a 50%");
+
+                        descricaoResultadoExame = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                        break;
+                    }
+                    case GLICEMIA: {
+                        stringBuilder.Append("Amosta em Jejum: 78 mg/dL");
+                        stringBuilder.Append("\nAmosta após 1h: 135 mg/dL");
+                        stringBuilder.Append("\nAmosta apos 2h: 121 mg/dL");
+
+                        descricaoResultadoExame = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                        break;
+                    }
+                    case EXAME_URINA: {
+                        stringBuilder.Append("Cor: Amarelado");
+                        stringBuilder.Append("\nDensidade: 1,04");
+                        stringBuilder.Append("\nPH: Ácida - 6,5");
+
+                        descricaoResultadoExame = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                        break;
+                    }
+                    case EXAME_FEZES: {
+                        stringBuilder.Append("Ovos de Ascaris Lumbricoides: Não detectado");
+                        stringBuilder.Append("\nLarvas de Strongyloides Tercoralis: Não detectado");
+
+                        descricaoResultadoExame = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                        break;
+                    }
+                    case TGO_TGP: {
+                        stringBuilder.Append("Leucócitos: 7,8405 mm3");
+
+                        descricaoResultadoExame = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                        break;
+                    }
+                    case COVID19: {
+                        stringBuilder.Append("SARS COV2 RNA: POSITVO");
+
+                        descricaoResultadoExame = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                        break;
+                    }
+                    default:
+                        descricaoResultadoExame = "Resultado do exame não disponível. Tente novamente mais tarde.";
+                        stringBuilder.Clear();
+                        break;
+                }
+
+                _db.ResultadosExamesOrdensServicos.Add(new ResultadoExameOrdemServico {
+                    IdExameOrdemServico = dadosExame.Id,
+                    DescricaoResultado = descricaoResultadoExame
+                });
+            }
         }
 
         private string GerarSenhaPaciente(string codigoProtocolo) {
@@ -156,11 +242,25 @@ namespace MyLabSys.Services {
         }
 
         public void Reabrir(int id) {
+            ExcluirResultadosExames(id);
+
             var ordemServico = _db.OrdensServicos.Find(id);
 
+            ordemServico.SenhaPaciente = null;
             ordemServico.Status = StatusOrdemServico.Aberta;
 
             _db.Update(ordemServico);
+        }
+
+        private void ExcluirResultadosExames(int idOrdemServico) {
+            var resultadosExames = _db.ExamesOrdensServicos
+                .Where(exameOrdem => exameOrdem.IdOrdemServico == idOrdemServico)
+                .Select(exameOrdem => exameOrdem.ResultadoExame)
+                .ToArray();
+
+            foreach (var resultadoExame in resultadosExames) {
+                _db.Remove(resultadoExame);
+            }
         }
 
         public OrdemServicoDto[] ObterDadosOrdensServicos(int? id = null) {

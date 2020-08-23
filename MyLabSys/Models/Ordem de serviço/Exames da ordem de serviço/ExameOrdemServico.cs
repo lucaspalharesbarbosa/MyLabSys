@@ -13,5 +13,7 @@ namespace MyLabSys.Models {
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Preco { get; set; }
+
+        public ResultadoExameOrdemServico ResultadoExame { get; set; }
     }
 }

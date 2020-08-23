@@ -10,6 +10,7 @@ namespace MyLabSys.Models {
         public DbSet<Exame> Exames { get; set; }
         public DbSet<OrdemServico> OrdensServicos { get; set; }
         public DbSet<ExameOrdemServico> ExamesOrdensServicos { get; set; }
+        public DbSet<ResultadoExameOrdemServico> ResultadosExamesOrdensServicos { get; set; }
         public DbSet<PostoColeta> PostosColetas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -44,6 +45,12 @@ namespace MyLabSys.Models {
                 .WithMany(convenio => convenio.Pacientes)
                 .HasForeignKey(paciente => paciente.IdConvenio)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ExameOrdemServico>()
+                .HasOne(exameOrdem => exameOrdem.ResultadoExame)
+                .WithOne(resultadoExame => resultadoExame.ExameOrdemServico)
+                .HasForeignKey<ResultadoExameOrdemServico>(resultadoExame => resultadoExame.IdExameOrdemServico)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
