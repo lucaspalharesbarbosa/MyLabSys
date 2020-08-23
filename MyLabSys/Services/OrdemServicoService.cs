@@ -5,6 +5,7 @@ using MyLabSys.Services.Interfaces;
 using MyLabSys.ViewModels.Dtos;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace MyLabSys.Services {
     public class OrdemServicoService : IOrdemServicoService {
@@ -142,9 +143,16 @@ namespace MyLabSys.Services {
         public void Fechar(OrdemServicoDto ordemServicoDto) {
             var ordemServico = Salvar(ordemServicoDto);
 
+            ordemServico.SenhaPaciente = GerarSenhaPaciente(ordemServicoDto.CodigoProtocolo);
             ordemServico.Status = StatusOrdemServico.Fechada;
 
             _db.Update(ordemServico);
+        }
+
+        private string GerarSenhaPaciente(string codigoProtocolo) {
+            var random = new Random();
+
+            return codigoProtocolo + random.Next(1000, 9999);
         }
 
         public void Reabrir(int id) {
@@ -181,7 +189,8 @@ namespace MyLabSys.Services {
                     EstaAberta = ordemServico.Status == StatusOrdemServico.Aberta,
                     TemConvenio = ordemServico.Paciente.IdConvenio.HasValue,
                     ValorTotal = ordemServico.Exames.Sum(exame => exame.Preco),
-                    PercentualDescontoConvenio = ordemServico.Paciente.Convenio.PercentualDesconto
+                    PercentualDescontoConvenio = ordemServico.Paciente.Convenio.PercentualDesconto,
+                    ordemServico.SenhaPaciente
                 })
                 .ToArray()
                 .Select(ordemServico => {
@@ -210,6 +219,7 @@ namespace MyLabSys.Services {
                         PercentualDescontoConvenio = ordemServico.PercentualDescontoConvenio,
                         ValorDescontoConvenio = valorDescontoConvenio,
                         ValorTotal = valorTotal,
+                        SenhaPaciente = ordemServico.SenhaPaciente
                     };
                 })
                 .ToArray();

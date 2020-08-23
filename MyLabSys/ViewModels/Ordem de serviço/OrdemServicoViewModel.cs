@@ -56,5 +56,11 @@ namespace MyLabSys.ViewModels {
 
         [JsonIgnore]
         public string ValorTotalFormatado => $"{ValorTotal ?? decimal.Zero:C}";
+
+        [Display(Name = "Usuário")]
+        public string UsuarioPaciente { get; set; }
+
+        [Display(Name = "Senha")]
+        public string SenhaPaciente { get; set; }
     }
 }

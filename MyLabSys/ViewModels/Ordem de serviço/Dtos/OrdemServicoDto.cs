@@ -21,5 +21,6 @@ namespace MyLabSys.ViewModels.Dtos {
         public bool TemConvenio { get; set; }
         public decimal PercentualDescontoConvenio { get; set; }
         public decimal ValorDescontoConvenio { get; set; }
+        public string SenhaPaciente { get; set; }
     }
 }

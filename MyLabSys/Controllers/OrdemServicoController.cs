@@ -106,7 +106,9 @@ namespace MyLabSys.Controllers {
                 EstaAberta = dadosOrdemServicoDto.EstaAberta,
                 PercentualDescontoConvenio = dadosOrdemServicoDto.PercentualDescontoConvenio,
                 ValorDescontoConvenio = dadosOrdemServicoDto.ValorDescontoConvenio,
-                ValorTotal = dadosOrdemServicoDto.ValorTotal
+                ValorTotal = dadosOrdemServicoDto.ValorTotal,
+                UsuarioPaciente = dadosOrdemServicoDto.CodigoProtocolo,
+                SenhaPaciente = dadosOrdemServicoDto.SenhaPaciente
             });
         }
         

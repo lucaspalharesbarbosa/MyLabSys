@@ -32,6 +32,8 @@ namespace MyLabSys.Models {
         public int IdMedico { get; set; }
         public Medico Medico { get; set; }
 
+        public string SenhaPaciente { get; set; }
+
         public StatusOrdemServico Status { get; set; }
 
         public ICollection<ExameOrdemServico> Exames { get; set; }

@@ -115,6 +115,19 @@
         </div>
     </div>
     <fieldset style="@(Model.Id > 0 ? "display: normal" : "display: none")">
+        <legend class="font-weight-bold">Dados para retirada dos resultados</legend>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label asp-for="UsuarioPaciente" class="control-label"></label>
+                <input asp-for="UsuarioPaciente" class="form-control font-weight-bold" disabled />
+            </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="SenhaPaciente" class="control-label"></label>
+                <input asp-for="SenhaPaciente" class="form-control font-weight-bold" disabled />
+            </div>
+        </div>
+    </fieldset>
+    <fieldset style="@(Model.Id > 0 ? "display: normal" : "display: none")">
         <legend class="font-weight-bold">Dados de faturamento</legend>
         <div class="row">
             <div class="col-md-6">
@@ -234,15 +247,18 @@
             var urlFecharOrdemServico = '@Url.Action("Fechar", "OrdemServico")';
 
             $.post(urlFecharOrdemServico, $('#form-ordem-servico').serialize(), function () {
-                location.reload();
+                RecarregarPagina()
             });
         }
         var Reabrir = function (id) {
             var urlReabrirOrdemServico = '@Url.Action("Reabrir", "OrdemServico")'
 
             $.post(urlReabrirOrdemServico, { id: id }, function () {
-                location.reload();
+                RecarregarPagina()
             });
+        }
+        var RecarregarPagina = function() {
+            location.reload();
         }
     </script>
 }

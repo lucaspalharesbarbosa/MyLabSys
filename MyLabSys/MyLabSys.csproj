@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20200822180651_AddConvenio.Designer.cs" />
     <Compile Remove="Migrations\20200822185916_AddConvenio.cs" />
     <Compile Remove="Migrations\20200822185916_AddConvenio.Designer.cs" />
+    <Compile Remove="Migrations\20200823032848_AddSenhaPacienteOrdemServico.cs" />
+    <Compile Remove="Migrations\20200823032848_AddSenhaPacienteOrdemServico.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
