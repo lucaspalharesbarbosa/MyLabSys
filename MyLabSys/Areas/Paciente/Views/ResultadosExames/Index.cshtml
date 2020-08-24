@@ -7,9 +7,12 @@
 <div class="wrapper fadeInDown">
     <div id="form-resultados-exames">
         <div class="fadeIn first">
-            <h2><i class="fas fa-flask"></i> Resultados de exames</h2>
+            <h2><i class="fas fa-file-contract"></i> Resultados de exames</h2>
         </div>
         <form asp-action="ConsultarResultadosExames" autocomplete="off">
+            <div class="alert alert-danger" role="alert" style="@(Model.UsuarioESenhaInvalidos ? "display: normal" : "display: none")">
+                <i class="fas fa-exclamation-triangle"></i> Dados inválidos!
+            </div>
             <input type="text" asp-for="Usuario" class="fadeIn second form-control" placeholder="Usuário" />
             <input type="password" asp-for="Senha" class="fadeIn third form-control" placeholder="Senha" />
             <button type="submit" class="btn-consultar-exames fadeIn fourth">

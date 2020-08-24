@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyLabSys.Areas.Paciente.Services;
+using MyLabSys.Areas.Paciente.Services.Interfaces;
 using MyLabSys.Factories;
 using MyLabSys.Factories.Interfaces;
 using MyLabSys.Models;
@@ -31,6 +33,7 @@ namespace MyLabSys {
         private void RegistrarInterfacesParaInjecaoDependencia(IServiceCollection services) {
             services.AddTransient<IOrdemServicoService, OrdemServicoService>();
             services.AddTransient<IOrdemServicoGridModelFactory, OrdemServicoGridModelFactory>();
+            services.AddTransient<IResultadosExamesService, ResultadosExamesService>();
         }
 
         void AdicionarServicoConexaoSqlServer(IServiceCollection services) {

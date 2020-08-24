@@ -114,7 +114,7 @@
             </div>
         </div>
     </div>
-    <fieldset style="@(Model.Id > 0 ? "display: normal" : "display: none")">
+    <fieldset style="@(Model.Id > 0 && !Model.EstaAberta ? "display: normal" : "display: none")">
         <legend class="font-weight-bold">Dados para retirada dos resultados</legend>
         <div class="row">
             <div class="col-md-6 form-group">
@@ -127,7 +127,7 @@
             </div>
         </div>
     </fieldset>
-    <fieldset style="@(Model.Id > 0 ? "display: normal" : "display: none")">
+    <fieldset style="@(Model.Id > 0 && !Model.EstaAberta ? "display: normal" : "display: none")">
         <legend class="font-weight-bold">Dados de faturamento</legend>
         <div class="row">
             <div class="col-md-6">

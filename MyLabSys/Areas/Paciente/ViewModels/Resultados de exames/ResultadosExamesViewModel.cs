@@ -7,5 +7,7 @@ namespace MyLabSys.Areas.Paciente.ViewModels {
 
         [Display(Name = "Senha")]
         public string Senha { get; set; }
+
+        public bool UsuarioESenhaInvalidos { get; set; }
     }
 }

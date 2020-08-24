@@ -1,0 +1,24 @@
+﻿@model ReportResultadosExamesViewModel
+
+@{
+    ViewData["Title"] = "Relatório de resultados dos exames";
+}
+
+<div class="form-group">
+    <button type="submit" class="btn btn-outline-dark" style="@(Model.ResultadoEstaDisponivel ? "display: normal" : "display: none")">
+        <i class="fas fa-print"></i> Imprimir
+    </button>
+    <a asp-action="Index" class="btn btn-outline-info">
+        <i class="fas fa-reply"></i> Voltar
+    </a>
+</div>
+<hr />
+<strong>Paciente: </strong> @Html.DisplayFor(viewModel => viewModel.NomePaciente)<br />
+<strong>Médico: </strong>@Html.DisplayFor(viewModel => viewModel.NomeMedico)<br />
+<strong>Posto de coleta: </strong>@Html.DisplayFor(viewModel => viewModel.DescricaoPostoColeta)
+<strong>Previsao de entrega: </strong>@Html.DisplayFor(viewModel => viewModel.DataPrevisaoEntrega)
+<hr />
+@foreach (var resultadoExame in Model.ResultadosExames) {
+    <strong>Exame: </strong>@Html.DisplayFor(e => resultadoExame.NomeExame)<br />
+    <strong>Resultado: </strong>@Html.DisplayFor(e => resultadoExame.Descricao)<br /><br />
+}

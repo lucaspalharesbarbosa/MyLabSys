@@ -95,7 +95,7 @@ namespace MyLabSys.Controllers {
             return View(nameof(Create), new OrdemServicoViewModel {
                 Id = dadosOrdemServicoDto.Id,
                 IdPaciente = dadosOrdemServicoDto.IdPaciente,
-                NomeConvenioPaciente = $"{dadosOrdemServicoDto.NomeConvenio} (Desconto: {dadosOrdemServicoDto.PercentualDescontoConvenio})",
+                NomeConvenioPaciente = $"{dadosOrdemServicoDto.NomeConvenio} (Desconto: {dadosOrdemServicoDto.PercentualDescontoConvenio:0.##}%)",
                 IdMedico = dadosOrdemServicoDto.IdMedico,
                 IdPostoColeta = dadosOrdemServicoDto.IdPostoColeta,
                 CodigoProtocolo = dadosOrdemServicoDto.CodigoProtocolo,
