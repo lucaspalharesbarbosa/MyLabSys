@@ -104,6 +104,7 @@ namespace MyLabSys.Controllers {
                 DataPrevisaoEntrega = dadosOrdemServicoDto.DataPrevisaoEntrega,
                 IdsExames = dadosOrdemServicoDto.IdsExames.ToArray(),
                 EstaAberta = dadosOrdemServicoDto.EstaAberta,
+                PacienteTemConvenio = dadosOrdemServicoDto.TemConvenio,
                 PercentualDescontoConvenio = dadosOrdemServicoDto.PercentualDescontoConvenio,
                 ValorDescontoConvenio = dadosOrdemServicoDto.ValorDescontoConvenio,
                 ValorTotal = dadosOrdemServicoDto.ValorTotal,
@@ -169,15 +170,15 @@ namespace MyLabSys.Controllers {
         }
 
         public JsonResult ObterNomeConvenioPaciente(int idPaciente) {
-            var dadosConvenio = _db.Pacientes
+            var dadosPaciente = _db.Pacientes
                 .Where(p => p.Id == idPaciente)
                 .Select(p => new {
-                    p.Convenio.Nome,
-                    p.Convenio.PercentualDesconto
-                }).FirstOrDefault();
-            var pacienteTemConvenio = dadosConvenio != null;
-            var nomeConvenio = pacienteTemConvenio
-                ? $"{dadosConvenio.Nome} (Desconto: {dadosConvenio.PercentualDesconto:0.##}%)"
+                    NomeConvenio= p.Convenio.Nome,
+                    PercentualDescontoConvenio = p.Convenio.PercentualDesconto,
+                    TemConvenio = p.Convenio != null
+                }).First();
+            var nomeConvenio = dadosPaciente.TemConvenio
+                ? $"{dadosPaciente.NomeConvenio} (Desconto: {dadosPaciente.PercentualDescontoConvenio:0.##}%)"
                 : "Sem convênio";
 
             return Json(nomeConvenio);

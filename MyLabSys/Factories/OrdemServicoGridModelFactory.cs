@@ -30,7 +30,9 @@ namespace MyLabSys.Factories {
                         CodigoPedidoMedico = ordem.CodigoPedidoMedico,
                         DataEmissao = ordem.DataEmissao,
                         DataPrevisaoEntrega = ordem.DataPrevisaoEntrega.Value,
-                        NomeConvenio = ordem.NomeConvenio,
+                        NomeConvenio = ordem.TemConvenio
+                            ? ordem.NomeConvenio
+                            : "Sem convênio",
                         NomePaciente = ordem.NomePaciente,
                         EstaAberta = ordem.EstaAberta,
                         DescricaoStatus = ordem.Status == StatusOrdemServico.Aberta
